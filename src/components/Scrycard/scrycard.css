@@ -1,0 +1,73 @@
+.scrycard {
+    height: 140px;
+    width: 100px;
+    display: flex;
+    position: relative;
+    background-color: #17150f;
+    border-radius: 4.75% / 3.5%;
+}
+[class^="scrycard-"] {
+    display: flex;
+    position: relative;
+    background-color: #17150f;
+    border-radius: 4.75% / 3.5%;
+}
+
+[class^="scrycard-"] > img {
+    user-drag: none;
+    -webkit-user-drag: none;
+}
+
+[class^="scrycard-"] > button {
+    position: absolute;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    visibility: hidden;
+    opacity: 0;
+
+    height: 10%;
+    width: 14%;
+    bottom: 2%;
+    right: 2%;
+    border-radius: 10%;
+    padding: 0;
+    margin: 0;
+
+    font-size: 100%;
+    line-height: 1;
+}
+
+[class^="scrycard-"]:hover > button {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scrycard-xs {
+    height: 70px;
+    width: 50px;
+}
+
+.scrycard-sm {
+    height: 98px;
+    width: 70px;
+}
+
+.scrycard-md {
+    height: 140px;
+    width: 100px;
+}
+
+.scrycard-lg {
+    height: 280px;
+    width: 200px;
+}
+
+.scrycard-xl {
+    height: 560px;
+    width: 400px;
+}

@@ -1,0 +1,69 @@
+.scrycards-loader-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.scrycards-loader {
+    color: #1c4c5b;
+    display: block;
+    position: relative;
+    width: 90%;
+    aspect-ratio: 1/1;
+}
+.scrycards-loader,
+.scrycards-loader div {
+    box-sizing: border-box;
+}
+.scrycards-loader div {
+    position: absolute;
+    top: 40%;
+    width: 15%;
+    height: 15%;
+    border-radius: 50%;
+    background: currentColor;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.scrycards-loader div:nth-child(1) {
+    left: 10%;
+    animation: dot1 0.6s infinite;
+}
+.scrycards-loader div:nth-child(2) {
+    left: 10%;
+    animation: dot2 0.6s infinite;
+}
+.scrycards-loader div:nth-child(3) {
+    left: 40%;
+    animation: dot3 0.6s infinite;
+}
+.scrycards-loader div:nth-child(4) {
+    left: 70%;
+    animation: dot4 0.6s infinite;
+}
+@keyframes dot1 {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+@keyframes dot2 {
+    100% {
+        left: 40%;
+    }
+}
+@keyframes dot3 {
+    100% {
+        left: 70%;
+    }
+}
+@keyframes dot4 {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+    }
+}
