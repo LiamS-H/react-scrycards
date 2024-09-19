@@ -10,6 +10,7 @@ import { useScrycard } from "../../hooks/useScrycard";
 import { ReactNode } from "react";
 import { IScrycardProps } from "../../types/scrycard";
 import "./scrycard.css";
+import Error from "./Error";
 
 interface ICardWrapperProps extends Omit<IScrycardProps, "card_name"> {
     children: ReactNode;
@@ -22,7 +23,13 @@ function CardWrapper(props: ICardWrapperProps) {
 
 export default function Scrycard(props: IScrycardProps) {
     const card = useScrycard(props.card_name);
-
+    if (card == undefined) {
+        return (
+            <CardWrapper>
+                <Error card_name={props.card_name} />
+            </CardWrapper>
+        );
+    }
     if (card == null) {
         return (
             <CardWrapper {...props}>
