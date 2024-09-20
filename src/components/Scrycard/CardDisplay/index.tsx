@@ -1,9 +1,31 @@
-import { IScryfallCard, IScryfallCardFace } from "../../../types/scryfallcards";
+import { IScrycardOptions } from "../../../types/scrycards/scrycard";
+import {
+    IScryfallCard,
+    IScryfallCardFace,
+    IScryfallCardImages,
+} from "../../../types/scryfall/cards";
+import ImageDisplay from "./ImageDisplay";
+import TextDisplay from "./TextDisplay";
 
-type ICardFace = Omit<IScryfallCardFace, "object">;
+export type ICardFace = Omit<IScryfallCardFace, "object">;
 
-export default function CardDisplay(props: {
+interface CardDisplayProps extends IScrycardOptions {
     card: IScryfallCardFace | IScryfallCard;
-}) {
+    inverted?: boolean;
+    image_uris?: IScryfallCardImages;
+}
+
+export default function CardDisplay(props: CardDisplayProps) {
     const card_face = props.card as ICardFace;
+    const size = props.size ? props.size : "md";
+    if (props.textOnly || !props.image_uris)
+        return <TextDisplay card_face={card_face} />;
+    return (
+        <ImageDisplay
+            card_name={props.card.name}
+            image_uris={props.image_uris}
+            size={size}
+            inverted={props.inverted}
+        />
+    );
 }
