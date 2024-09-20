@@ -14,7 +14,8 @@
         "vitest": "vitest",
         "lint": "eslint 'src/**/*.{ts,tsx}' --max-warnings=0 && echo '✅ No linting issues found!'",
         "build": "tsup src/index.ts --format cjs,esm --dts",
-        "prepare": "husky"
+        "prepare": "husky",
+        "release": "npm run build && npm publish"
     },
     "dependencies": {
         "react": "^18.3.1",
