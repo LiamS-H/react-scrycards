@@ -10,25 +10,27 @@ import { fetchCards } from "../utils/fetchcards";
 import { matchcards } from "../utils/matchcards";
 
 interface IScrycardsContext {
-    cards: { [key: string]: IScryfallCard };
-    requestCard: (arg0: string) => Promise<IScryfallCard | null>;
+    cards: { [key: string]: IScryfallCard | null };
+    requestCard: (arg0: string) => Promise<IScryfallCard | undefined | null>;
 }
 
 const ScrycardsContext = createContext<IScrycardsContext>({
     cards: {},
-    requestCard: async () => null,
+    requestCard: async () => undefined,
 });
 
 function ScrycardsContextProvider(props: { children: ReactNode }) {
     const [needsFetch, setNeedsFetch] = useState<boolean>(false);
-    const [cards, setCards] = useState<{ [key: string]: IScryfallCard }>({});
+    const [cards, setCards] = useState<{ [key: string]: IScryfallCard | null }>(
+        {},
+    );
     const [cardNameMap, setCardNameMap] = useState<{ [key: string]: string }>(
         {},
     );
     const [queue, setQueue] = useState<Set<string>>(new Set());
     const [promises, setPromises] = useState<{
         [key: string]: ((
-            arg0: IScryfallCard | Promise<IScryfallCard>,
+            arg0: IScryfallCard | Promise<IScryfallCard> | undefined,
         ) => void)[];
     }>({});
 
@@ -44,11 +46,13 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
             for (const card of fetched_cards) {
                 new_cards[card.name] = card;
                 if (queue.has(card.name)) continue;
-
-                matchcards(queue, card.name).forEach((card_name) => {
-                    cardNameMap[card_name] = card.name;
-                });
+                const matching_card = matchcards(queue, card.name).forEach(
+                    (card_name) => {
+                        cardNameMap[card_name] = card.name;
+                    },
+                );
             }
+
             const all_cards = { ...cards, ...new_cards };
 
             setCards(all_cards);
@@ -62,6 +66,11 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
                     cached_card = all_cards[cardNameMap[card.toLowerCase()]];
                 }
                 if (!cached_card) {
+                    promises[card].forEach((resolve) => resolve(undefined));
+                    console.error(
+                        `[scrycards] Unable to locate card "${card}"`,
+                    );
+                    all_cards[card] = null;
                     continue;
                 }
                 promises[card].forEach((resolve) => resolve(cached_card));
@@ -76,25 +85,31 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
     async function requestCard(cardname: string) {
         const card = cards[cardname];
         if (card) return card;
+        if (card === null) return;
         const matched_name = cardNameMap[cardname];
         if (matched_name) return cards[matched_name];
 
         setQueue((queue) => queue.add(cardname));
         setNeedsFetch(true);
 
-        const promise = new Promise<IScryfallCard>((resolve) => {
-            setPromises((promises) => {
-                const new_promises = {
-                    ...promises,
-                };
-                if (promises[cardname] != undefined) {
-                    new_promises[cardname] = [...promises[cardname], resolve];
-                } else {
-                    new_promises[cardname] = [resolve];
-                }
-                return new_promises;
-            });
-        });
+        const promise = new Promise<IScryfallCard | undefined | null>(
+            (resolve) => {
+                setPromises((promises) => {
+                    const new_promises = {
+                        ...promises,
+                    };
+                    if (promises[cardname] != undefined) {
+                        new_promises[cardname] = [
+                            ...promises[cardname],
+                            resolve,
+                        ];
+                    } else {
+                        new_promises[cardname] = [resolve];
+                    }
+                    return new_promises;
+                });
+            },
+        );
         return await promise;
     }
 
