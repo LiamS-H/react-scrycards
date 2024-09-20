@@ -32,7 +32,8 @@ export async function fetchCards(
             fetched_cards.concat(data.data);
         }
         return fetched_cards;
-    } catch {
+    } catch (error) {
+        console.error("[scrycards] scryfall-error:", error);
         return null;
     }
 }
