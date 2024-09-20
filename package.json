@@ -1,36 +1,38 @@
 {
-    "name": "react-scrycards",
-    "version": "0.1.0",
-    "type": "module",
-    "license": "MIT",
-    "main": "dist/index.cjs",
-    "module": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "files": [
-        "dist"
-    ],
-    "scripts": {
-        "test": "vitest",
-        "lint": "eslint 'src/**/*.{ts,tsx}' --max-warnings=0 && echo '✅ No linting issues found!'",
-        "build": "tsup src/index.ts --format cjs,esm --dts"
-    },
-    "dependencies": {
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1"
-    },
-    "peerDependencies": {
-        "tsup": "^8.3.0",
-        "typescript": "^5.6.2"
-    },
-    "devDependencies": {
-        "@eslint/js": "^9.10.0",
-        "@testing-library/jest-dom": "^6.5.0",
-        "@testing-library/react": "^16.0.1",
-        "eslint": "^9.10.0",
-        "eslint-plugin-react": "^7.36.1",
-        "globals": "^15.9.0",
-        "jsdom": "^25.0.0",
-        "typescript-eslint": "^8.6.0",
-        "vitest": "^2.1.1"
-    }
+  "name": "react-scrycards",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "vitest",
+    "lint": "eslint 'src/**/*.{ts,tsx}' --max-warnings=0 && echo '✅ No linting issues found!'",
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "peerDependencies": {
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.10.0",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "eslint": "^9.10.0",
+    "eslint-plugin-react": "^7.36.1",
+    "globals": "^15.9.0",
+    "husky": "^9.1.6",
+    "jsdom": "^25.0.0",
+    "typescript-eslint": "^8.6.0",
+    "vitest": "^2.1.1"
+  }
 }
