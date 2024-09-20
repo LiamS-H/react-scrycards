@@ -2,7 +2,7 @@ import {
     IScryfallCard,
     IScryfallCardResult,
     IScryfallError,
-} from "../types/scryfallcards";
+} from "../types/scryfall/cards";
 
 export async function fetchCards(
     cards: Iterable<string>,
@@ -17,7 +17,6 @@ export async function fetchCards(
     const url = new URL("https://api.scryfall.com/cards/search");
     url.search = search.toString();
     try {
-        console.log("Scryfall Query:", query);
         const r = await fetch(url.toString());
         let data = (await r.json()) as IScryfallCardResult | IScryfallError;
 
@@ -32,7 +31,8 @@ export async function fetchCards(
             fetched_cards.concat(data.data);
         }
         return fetched_cards;
-    } catch {
+    } catch (error) {
+        console.error("[scrycards] scryfall-error:", error);
         return null;
     }
 }

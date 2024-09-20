@@ -1,9 +1,18 @@
-import { IScryfallCard } from "../../../types/scryfallcards";
+import { IScrycardOptions } from "../../../types/scrycards/scrycard";
+import { IScryfallCard } from "../../../types/scryfall/cards";
+import CardDisplay from "../CardDisplay";
 
-export default function SingleFaced(props: { card: IScryfallCard }) {
+interface ISingleFacedProps extends IScrycardOptions {
+    card: IScryfallCard;
+}
+
+export default function SingleFaced(props: ISingleFacedProps) {
+    const options = props as IScrycardOptions;
     return (
-        <>
-            <img src={props.card.image_uris.normal}></img>
-        </>
+        <CardDisplay
+            card={props.card}
+            image_uris={props.card.image_uris}
+            {...options}
+        />
     );
 }
