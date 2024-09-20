@@ -17,7 +17,7 @@ interface ICardWrapperProps extends Omit<IScrycardProps, "card_name"> {
 }
 
 function CardWrapper(props: ICardWrapperProps) {
-    const className = props.size ? `scrycard-${props.size}` : "scrycard";
+    const className = props.size ? `scrycard-${props.size}` : "scrycard-md";
     return <div className={className}>{props.children}</div>;
 }
 
