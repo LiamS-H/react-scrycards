@@ -23,14 +23,14 @@ function CardWrapper(props: ICardWrapperProps) {
 
 export default function Scrycard(props: IScrycardProps) {
     const card = useScrycard(props.card_name);
-    if (card == undefined) {
+    if (card === undefined) {
         return (
             <CardWrapper>
                 <Error card_name={props.card_name} />
             </CardWrapper>
         );
     }
-    if (card == null) {
+    if (card === null) {
         return (
             <CardWrapper {...props}>
                 <LoadingCard />
