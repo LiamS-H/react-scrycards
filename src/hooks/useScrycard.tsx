@@ -6,7 +6,7 @@ function useScrycard(cardname: string) {
     const { requestCard } = useScrycardsContext();
     const [card, setCard] = useState<IScryfallCard | null | undefined>(null);
     async function getCard() {
-        let card = await requestCard(cardname);
+        const card = await requestCard(cardname);
         setCard(card);
     }
     useEffect(() => {

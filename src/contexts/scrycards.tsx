@@ -51,11 +51,9 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
             for (const card of fetched_cards) {
                 new_cards[card.name] = card;
                 if (queue.has(card.name)) continue;
-                const matching_card = matchcards(queue, card.name).forEach(
-                    (card_name) => {
-                        cardNameMap[card_name] = card.name;
-                    },
-                );
+                matchcards(queue, card.name).forEach((card_name) => {
+                    cardNameMap[card_name] = card.name;
+                });
             }
 
             const all_cards = { ...cards, ...new_cards };

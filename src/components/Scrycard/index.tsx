@@ -27,8 +27,8 @@ function CardWrapper(props: ICardWrapperProps) {
             "[scrycards] custom width / height is unsupported for textOnly",
         );
     }
-    let width: string | null = props.width ? props.width : null;
-    let height: string | null = !width && props.height ? props.height : null;
+    const width: string | null = props.width ? props.width : null;
+    const height: string | null = !width && props.height ? props.height : null;
     const style: React.CSSProperties = {};
     if (width) style.width = width;
     if (height) style.height = height;
