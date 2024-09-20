@@ -1,3 +1,5 @@
+type ScryfallColors = "U" | "W" | "B" | "G" | "R";
+
 interface IScryfallCardResult {
     object: "list";
 
@@ -24,8 +26,8 @@ interface IScryfallCardFace {
     power: string;
     toughness: string;
 
-    colors: string[];
-    color_identity: string[];
+    colors: ScryfallColors[];
+    color_identity: ScryfallColors[];
     type_line: string;
     oracle_text: string;
 
@@ -37,9 +39,9 @@ interface IScryfallCardFace {
 interface IScryfallCardImages {
     art_crop: string;
     border_crop: string;
-    large: string;
-    normal: string;
     png: string;
+    normal: string;
+    large: string;
     small: string;
 }
 
@@ -75,8 +77,8 @@ interface IScryfallCard {
         tix: string | null;
     };
 
-    colors: string[];
-    color_identity: string[];
+    colors: ScryfallColors[];
+    color_identity: ScryfallColors[];
     type_line: string;
     oracle_text: string;
 
@@ -98,4 +100,5 @@ export type {
     IScryfallCardFace,
     IScryfallCardImages,
     IScryfallDualCard,
+    ScryfallColors,
 };

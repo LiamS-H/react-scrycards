@@ -1,3 +1,10 @@
+.scrycard {
+    display: flex;
+    position: relative;
+    background-color: #17150f;
+    border-radius: 4.75% / 3.5%;
+    aspect-ratio: 5 / 7;
+}
 [class^="scrycard-"] {
     display: flex;
     position: relative;
@@ -6,12 +13,13 @@
     aspect-ratio: 5 / 7;
 }
 
-[class^="scrycard-"] > img {
+[class^="scrycard"] > img {
     user-drag: none;
     -webkit-user-drag: none;
+    border-radius: 4.75% / 3.5%;
 }
 
-[class^="scrycard-"] > button {
+[class^="scrycard"] > button {
     position: absolute;
     border: none;
     background: none;
@@ -34,7 +42,7 @@
     line-height: 1;
 }
 
-[class^="scrycard-"]:hover > button {
+[class^="scrycard"]:hover > button {
     opacity: 1;
     visibility: visible;
 }
@@ -44,13 +52,15 @@
     min-height: 70px;
     width: 50px;
     min-width: 50px;
+    font-size: 2.5px;
 }
 
 .scrycard-sm {
     height: 98px;
     min-height: 98px;
     width: 70px;
-    min-width: 98px;
+    min-width: 70px;
+    font-size: 3.75px;
 }
 
 .scrycard-md {
@@ -58,6 +68,7 @@
     min-height: 140px;
     width: 100px;
     min-width: 100px;
+    font-size: 5px;
 }
 
 .scrycard-lg {
@@ -65,6 +76,7 @@
     min-height: 280px;
     width: 200px;
     min-width: 200px;
+    font-size: 10px;
 }
 
 .scrycard-xl {
@@ -72,6 +84,7 @@
     min-height: 560px;
     width: 400px;
     min-width: 400px;
+    font-size: 20px;
 }
 
 .scrycard-error-container {
@@ -88,6 +101,7 @@
     opacity: 0.5;
     justify-content: center;
     align-items: center;
+    border-radius: 2.7% / 2%;
 }
 .scrycard-error > svg {
     width: 30%;

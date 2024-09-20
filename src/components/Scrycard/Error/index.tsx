@@ -1,4 +1,4 @@
-export default function Error(props: { card_name: string }) {
+export default function Error() {
     return (
         <div className="scrycard-error-container">
             <div className="scrycard-error">

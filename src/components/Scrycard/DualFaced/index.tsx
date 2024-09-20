@@ -1,22 +1,28 @@
 import { useState } from "react";
-import { IScryfallDualCard } from "../../../types/scryfallcards";
+import { IScryfallDualCard } from "../../../types/scryfall/cards";
 import FlipButton from "../FlipButton";
+import { IScrycardOptions } from "../../../types/scrycards/scrycard";
+import CardDisplay from "../CardDisplay";
 
-export default function DualFaced(props: { card: IScryfallDualCard }) {
+interface IDualFacedProps extends IScrycardOptions {
+    card: IScryfallDualCard;
+}
+
+export default function DualFaced(props: IDualFacedProps) {
     const [side, setSide] = useState<number>(0);
     const face = props.card.card_faces[side];
     const sides = props.card.card_faces.length;
     function flip() {
         setSide((side) => (side + 1) % sides);
     }
-    const layout = props.card.layout;
-
-    let image = face.image_uris?.normal;
-    if (layout == "flip") image = props.card.image_uris.normal;
-
+    const options = props as IScrycardOptions;
     return (
         <>
-            <img src={image}></img>
+            <CardDisplay
+                card={face}
+                image_uris={face.image_uris}
+                {...options}
+            />
             <FlipButton flip={flip} />
         </>
     );

@@ -5,18 +5,22 @@ import {
     useEffect,
     useState,
 } from "react";
-import { IScryfallCard } from "../types/scryfallcards";
+import { IScryfallCard } from "../types/scryfall/cards";
 import { fetchCards } from "../utils/fetchcards";
 import { matchcards } from "../utils/matchcards";
+import { IScrysymbolMap } from "../types/scrycards/scrycard";
+import { fetchsymbols } from "../utils/fetchsymbols";
 
 interface IScrycardsContext {
     cards: { [key: string]: IScryfallCard | null };
     requestCard: (arg0: string) => Promise<IScryfallCard | undefined | null>;
+    symbols: IScrysymbolMap;
 }
 
 const ScrycardsContext = createContext<IScrycardsContext>({
     cards: {},
     requestCard: async () => undefined,
+    symbols: {},
 });
 
 function ScrycardsContextProvider(props: { children: ReactNode }) {
@@ -27,6 +31,7 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
     const [cardNameMap, setCardNameMap] = useState<{ [key: string]: string }>(
         {},
     );
+    const [symbols, setSymbols] = useState<IScrysymbolMap>({});
     const [queue, setQueue] = useState<Set<string>>(new Set());
     const [promises, setPromises] = useState<{
         [key: string]: ((
@@ -39,8 +44,8 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
         if (queue.size == 0) return;
 
         async function parseCards() {
-            const fetched_cards = await fetchCards(queue);
-            if (fetched_cards == null) return;
+            let fetched_cards = await fetchCards(queue);
+            if (fetched_cards == null) fetched_cards = [];
             const new_cards: { [key: string]: IScryfallCard } = {};
 
             for (const card of fetched_cards) {
@@ -82,6 +87,27 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
         parseCards();
     }, [needsFetch]);
 
+    useEffect(() => {
+        async function parseSymbols() {
+            const fetched_symbols = await fetchsymbols();
+            if (fetched_symbols == null) {
+                console.error(
+                    "[scrycards] something went wrong fetching symbols",
+                );
+                return;
+            }
+            const new_symbols: IScrysymbolMap = {};
+            for (const symbol of fetched_symbols) {
+                new_symbols[symbol.symbol] = {
+                    uri: symbol.svg_uri,
+                    description: symbol.english,
+                };
+            }
+            setSymbols(new_symbols);
+        }
+        parseSymbols();
+    });
+
     async function requestCard(cardname: string) {
         const card = cards[cardname];
         if (card) return card;
@@ -118,6 +144,7 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
             value={{
                 cards: cards,
                 requestCard: requestCard,
+                symbols: symbols,
             }}
         >
             {props.children}
