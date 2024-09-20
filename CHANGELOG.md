@@ -1,5 +1,11 @@
 # react-scrycards
 
+## 1.0.2
+
+### Patch Changes
+
+-   3499d2a: fix publishing
+
 ## 1.0.1
 
 ### Patch Changes
