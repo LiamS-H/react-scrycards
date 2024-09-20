@@ -17,7 +17,7 @@ export default function ImageDisplay(props: {
     size: ScrycardSizes;
     inverted?: boolean;
 }) {
-    let size = props.size;
+    const size = props.size;
     let missing_size = false;
     if (size == "xl") {
         if (props.image_uris.png) {

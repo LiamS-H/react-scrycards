@@ -30,7 +30,6 @@ const generateGradientStyle = (colors: MTGColors): React.CSSProperties => {
 };
 
 export default function TextDisplay(props: { card_face: ICardFace }) {
-    const color = "";
     return (
         <div className="scrytextcard-container">
             <div
