@@ -5,7 +5,7 @@ import ScryNameCard from "../src/components/ScryNameCard";
 
 describe("ScryCard", () => {
     it("renders Akki correctly", async () => {
-        const card_name = "Akki Lavarunner";
+        const card_name = "Akki Lavarunner // Tok-Tok, Volcano Born";
         render(
             <ScrycardsContextProvider>
                 <ScryNameCard card_name={card_name} />
@@ -30,7 +30,7 @@ describe("ScryCard", () => {
         );
     });
     it("renders 'mixed invalids' correctly", async () => {
-        const card_name = "Akki Lavarunner";
+        const card_name = "Akki Lavarunner // Tok-Tok, Volcano Born";
         render(
             <ScrycardsContextProvider>
                 <ScryNameCard card_name={"invalid name"} />
@@ -45,6 +45,6 @@ describe("ScryCard", () => {
         expect(screen.getByRole("img")).toBeInTheDocument();
     });
     it("renders a list of 10 cards correctly", async () => {
-        const cards = ["Delver of Secrets", "Odds", ""];
+        const cards = ["Delver of Secrets", "Odds // Ends", ""];
     });
 });
