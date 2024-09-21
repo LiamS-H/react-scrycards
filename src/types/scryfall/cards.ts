@@ -18,6 +18,15 @@ interface IScryfallError {
     details: string;
 }
 
+interface IScryfallParts {
+    component: "token" | "combo_piece" | "meld_result" | "meld_part";
+    id: string;
+    name: string;
+    object: "related_card";
+    type_line: "Token";
+    uri: string;
+}
+
 interface IScryfallCardFace {
     object: "card_face";
 
@@ -86,11 +95,16 @@ interface IScryfallCard {
     highres_image: true;
     image_uris: IScryfallCardImages;
     card_faces?: IScryfallCardFace[];
+    all_parts: IScryfallParts[];
 
     artist: string;
 }
 interface IScryfallDualCard extends IScryfallCard {
     card_faces: IScryfallCardFace[];
+}
+
+interface IScryfallMeldCard extends IScryfallCard {
+    all_cards: IScryfallParts;
 }
 
 export type {
@@ -101,4 +115,5 @@ export type {
     IScryfallCardImages,
     IScryfallDualCard,
     ScryfallColors,
+    IScryfallMeldCard,
 };

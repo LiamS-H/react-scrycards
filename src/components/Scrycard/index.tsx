@@ -11,6 +11,7 @@ import {
     IScrycardProps,
 } from "../../types/scrycards/scrycard";
 import SplitCard from "./SplitCard";
+import Scryhover from "../Scryhover";
 
 interface ICardWrapperProps extends IScrycardOptions {
     children: ReactNode;
@@ -36,10 +37,18 @@ function CardWrapper(props: ICardWrapperProps) {
     const size = props.size ? props.size : "md";
 
     const className = height || width ? "scrycard" : `scrycard-${size}`;
+    if (!props.animated)
+        return (
+            <div style={style} className={className}>
+                {props.children}
+            </div>
+        );
     return (
-        <div style={style} className={className}>
-            {props.children}
-        </div>
+        <Scryhover>
+            <div style={style} className={className}>
+                {props.children}
+            </div>
+        </Scryhover>
     );
 }
 
@@ -53,7 +62,10 @@ export default function Scrycard(props: IScrycardProps) {
         card = <LoadingCard />;
     } else if (props.card.layout == "flip") {
         card = <FlipCard card={props.card as IScryfallDualCard} {...options} />;
-    } else if (props.card.layout == "split") {
+    } else if (
+        props.card.layout === "split" ||
+        props.card.layout === "adventure"
+    ) {
         card = (
             <SplitCard card={props.card as IScryfallDualCard} {...options} />
         );

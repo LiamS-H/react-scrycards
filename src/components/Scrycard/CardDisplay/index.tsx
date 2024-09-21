@@ -13,13 +13,19 @@ interface CardDisplayProps extends IScrycardOptions {
     card: IScryfallCardFace | IScryfallCard;
     inverted?: boolean;
     image_uris?: IScryfallCardImages;
+    layout?: string;
 }
 
 export default function CardDisplay(props: CardDisplayProps) {
     const card_face = props.card as ICardFace;
     const size = props.size ? props.size : "md";
     if (props.textOnly || !props.image_uris)
-        return <TextDisplay card_face={card_face} />;
+        return (
+            <TextDisplay
+                card_face={card_face}
+                layout={props.layout ? props.layout : ""}
+            />
+        );
     return (
         <ImageDisplay
             card_name={props.card.name}

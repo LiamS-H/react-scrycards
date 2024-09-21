@@ -96,15 +96,12 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
             }
             const new_symbols: IScrysymbolMap = {};
             for (const symbol of fetched_symbols) {
-                new_symbols[symbol.symbol] = {
-                    uri: symbol.svg_uri,
-                    description: symbol.english,
-                };
+                new_symbols[symbol.symbol] = symbol.svg_uri;
             }
             setSymbols(new_symbols);
         }
         parseSymbols();
-    });
+    }, []);
 
     async function requestCard(cardname: string) {
         const card = cards[cardname];

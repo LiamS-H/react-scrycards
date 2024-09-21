@@ -7,12 +7,11 @@ interface ISingleFacedProps extends IScrycardOptions {
 }
 
 export default function SingleFaced(props: ISingleFacedProps) {
-    const options = props as IScrycardOptions;
     return (
         <CardDisplay
-            card={props.card}
             image_uris={props.card.image_uris}
-            {...options}
+            {...props}
+            layout={props.card.layout}
         />
     );
 }

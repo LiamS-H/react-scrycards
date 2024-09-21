@@ -12,6 +12,7 @@ interface IScrycardOptions {
     height?: string;
     flipButton?: false;
     textOnly?: true;
+    animated?: true;
 }
 
 interface IScryNameCardProps extends IScrycardOptions {
@@ -23,10 +24,7 @@ interface IScrycardProps extends IScrycardOptions {
 }
 
 interface IScrysymbolMap {
-    [key: string]: {
-        uri: string;
-        description: string;
-    };
+    [key: string]: string;
 }
 export type {
     IScryNameCardProps,

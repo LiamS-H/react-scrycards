@@ -11,6 +11,10 @@ interface IDualFacedProps extends IScrycardOptions {
 export default function DualFaced(props: IDualFacedProps) {
     const [side, setSide] = useState<number>(0);
     const face = props.card.card_faces[side];
+    if (!face.colors) {
+        face.colors = props.card.colors;
+    }
+
     const sides = props.card.card_faces.length;
     function flip() {
         setSide((side) => (side + 1) % sides);
@@ -19,9 +23,9 @@ export default function DualFaced(props: IDualFacedProps) {
     return (
         <>
             <CardDisplay
+                {...options}
                 card={face}
                 image_uris={face.image_uris}
-                {...options}
             />
             <FlipButton flip={flip} />
         </>
