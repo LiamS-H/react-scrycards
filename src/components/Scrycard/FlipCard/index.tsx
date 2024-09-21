@@ -15,14 +15,16 @@ export default function FlipCard(props: IFlipCardProps) {
     }
     const side = flipped ? 1 : 0;
     const face = props.card.card_faces[side];
+    face.colors = props.card.colors;
     const options = props as IScrycardOptions;
     return (
         <>
             <CardDisplay
+                {...options}
                 card={face}
                 image_uris={props.card.image_uris}
                 inverted={flipped}
-                {...options}
+                layout={props.card.layout}
             />
             <FlipButton flip={flip} />
         </>

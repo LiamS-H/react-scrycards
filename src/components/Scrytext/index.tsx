@@ -4,13 +4,14 @@ import { useScrycardsContext } from "../../contexts/scrycards";
 interface IScrytextProps extends React.HTMLProps<HTMLSpanElement> {
     children?: string;
 }
-// to do make () italics
-// const parts = match[0].split("(.*?)(\\s*\\(.*?\\))(\\s*.*)", 3)
 
-// split on new line
-// split on () for italics
-// split on {?} for symbols
-//
+function Italify(input: string): React.ReactNode[] {
+    const chunks = input.split(/(\(.*?\))/);
+    return chunks.map((chunk) => {
+        if (chunk[0] === "(") return <i key={chunk}>{chunk}</i>;
+        return chunk;
+    });
+}
 
 export default function Scrytext(props: IScrytextProps) {
     const { symbols } = useScrycardsContext();
@@ -24,7 +25,9 @@ export default function Scrytext(props: IScrytextProps) {
     const elements: React.ReactNode[] = [];
 
     while ((match = regex.exec(props.children)) !== null) {
-        elements.push(props.children.slice(lastIndex, match.index).trim());
+        elements.push(
+            ...Italify(props.children.slice(lastIndex, match.index).trim()),
+        );
 
         const symbolName = "{" + match[1].toUpperCase() + "}";
         const symbol = symbols[symbolName];
@@ -32,9 +35,13 @@ export default function Scrytext(props: IScrytextProps) {
             elements.push(
                 <img
                     key={`${symbolName} ${match.index}`}
-                    src={symbol.uri}
-                    alt={symbol.description}
-                    style={{ height: "1em", verticalAlign: "middle" }}
+                    src={symbol}
+                    alt={symbolName}
+                    style={{
+                        height: "1em",
+                        verticalAlign: "middle",
+                        width: "fit-content",
+                    }}
                 />,
             );
         } else {
@@ -43,7 +50,7 @@ export default function Scrytext(props: IScrytextProps) {
         lastIndex = regex.lastIndex;
     }
 
-    elements.push(props.children.slice(lastIndex).trim());
+    elements.push(...Italify(props.children.slice(lastIndex).trim()));
 
     return <span {...props}>{elements}</span>;
 }

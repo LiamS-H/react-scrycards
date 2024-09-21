@@ -15,9 +15,16 @@ export default function SplitCard(props: IFlipCardProps) {
     }
     const side = flipped ? 1 : 0;
     const face = props.card.card_faces[side];
+    face.colors = props.card.colors;
+    const options = props as IScrycardOptions;
     return (
         <>
-            <CardDisplay card={face} image_uris={props.card.image_uris} />
+            <CardDisplay
+                {...options}
+                card={face}
+                image_uris={props.card.image_uris}
+                layout={props.card.layout}
+            />
             {props.textOnly ? <FlipButton flip={flip} /> : null}
         </>
     );
