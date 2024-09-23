@@ -3,7 +3,6 @@ import {
     generateCardBorder,
     generateCardGradient,
 } from "../../../../utils/cardBorder";
-import { ScryfallCard, ScryfallColors } from "@scryfall/api-types";
 
 import "../layouts.css";
 import { IScrycardLayoutCard } from "../../../../types/scrycards/scrycard";

@@ -76,7 +76,7 @@ function compFromCard(
 
 export default function Scrycard(props: IScrycardProps) {
     const options = props as IScrycardOptions;
-    let card = compFromCard(options, props.card);
+    const card = compFromCard(options, props.card);
 
     return <CardWrapper {...options}>{card}</CardWrapper>;
 }

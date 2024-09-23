@@ -19,7 +19,6 @@ export default function DoubleSided(props: DoubleSidedSplitProps) {
     function flip() {
         setSide((side) => (side + 1) % sides);
     }
-    const options = props as IScrycardOptions;
 
     if (!props.textOnly && face.image_uris) {
         return (
