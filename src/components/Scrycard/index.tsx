@@ -1,17 +1,17 @@
-import { IScryfallDualCard } from "../../types/scryfall/cards";
-import DualFaced from "./DualFaced";
-import FlipCard from "./FlipCard";
-import LoadingCard from "./Loading";
-import SingleFaced from "./SingleFaced";
 import React, { ReactNode } from "react";
 import "./scrycard.css";
-import Error from "./Error";
 import {
     IScrycardOptions,
     IScrycardProps,
 } from "../../types/scrycards/scrycard";
-import SplitCard from "./SplitCard";
 import Scryhover from "../Scryhover";
+import { ScryfallCard } from "@scryfall/api-types";
+import Error from "./CardTypes/Error";
+import LoadingCard from "./CardTypes/Loading";
+import SingleFaced from "./CardTypes/SingleFaced";
+import FlipCard from "./CardTypes/SingleSidedFlip";
+import DoubleSided from "./CardTypes/DoubleSidedFlip";
+import SplitCard from "./CardTypes/SingleSidedSplit";
 
 interface ICardWrapperProps extends IScrycardOptions {
     children: ReactNode;
@@ -52,29 +52,31 @@ function CardWrapper(props: ICardWrapperProps) {
     );
 }
 
-export default function Scrycard(props: IScrycardProps) {
-    let card = null;
-    const options = props as IScrycardOptions;
-
-    if (props.card === undefined) {
-        card = <Error />;
-    } else if (props.card === null) {
-        card = <LoadingCard />;
-    } else if (props.card.layout == "flip") {
-        card = <FlipCard card={props.card as IScryfallDualCard} {...options} />;
-    } else if (
-        props.card.layout === "split" ||
-        props.card.layout === "adventure"
-    ) {
-        card = (
-            <SplitCard card={props.card as IScryfallDualCard} {...options} />
-        );
-    } else if (props.card.card_faces && props.card.card_faces[0].image_uris) {
-        card = (
-            <DualFaced card={props.card as IScryfallDualCard} {...options} />
-        );
-    } else {
-        card = <SingleFaced card={props.card} {...options} />;
+function compFromCard(
+    options: IScrycardOptions,
+    card: ScryfallCard.Any | undefined | null,
+) {
+    if (card === undefined) {
+        return <Error />;
     }
+    if (card === null) {
+        return <LoadingCard />;
+    }
+    if (!("card_faces" in card)) {
+        return <SingleFaced card={card} {...options} />;
+    }
+    if (card.layout == "flip") {
+        return <FlipCard card={card} {...options} />;
+    }
+    if ("card_back_id" in card) {
+        return <SplitCard card={card} {...options} />;
+    }
+    return <DoubleSided card={card} {...options} />;
+}
+
+export default function Scrycard(props: IScrycardProps) {
+    const options = props as IScrycardOptions;
+    let card = compFromCard(options, props.card);
+
     return <CardWrapper {...options}>{card}</CardWrapper>;
 }

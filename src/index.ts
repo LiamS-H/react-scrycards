@@ -6,5 +6,3 @@ export {
     ScrycardsContextProvider,
     useScrycardsContext,
 } from "./contexts/scrycards";
-export type * from "./types/scryfall/cards";
-export type * from "./types/scryfall/symbols";

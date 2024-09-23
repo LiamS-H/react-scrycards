@@ -4,15 +4,15 @@ import { ScrycardsContextProvider } from "../src/contexts/scrycards";
 import ScryNameCard from "../src/components/ScryNameCard";
 
 describe("ScryCard", () => {
+    const Akki = "Akki Lavarunner // Tok-Tok, Volcano Born";
     it("renders Akki correctly", async () => {
-        const card_name = "Akki Lavarunner";
         render(
             <ScrycardsContextProvider>
-                <ScryNameCard card_name={card_name} />
+                <ScryNameCard card_name={Akki} />
             </ScrycardsContextProvider>,
         );
         await waitFor(
-            () => expect(screen.queryByAltText(card_name)).toBeInTheDocument(),
+            () => expect(screen.queryByAltText(Akki)).toBeInTheDocument(),
             { timeout: 2000 },
         );
 
@@ -30,30 +30,30 @@ describe("ScryCard", () => {
         );
     });
     it("renders 'mixed invalids' correctly", async () => {
-        const card_name = "Akki Lavarunner";
         render(
             <ScrycardsContextProvider>
                 <ScryNameCard card_name={"invalid name"} />
-                <ScryNameCard card_name={card_name} />
+                <ScryNameCard card_name={Akki} />
             </ScrycardsContextProvider>,
         );
         await waitFor(
             () => expect(screen.queryByText("⚠")).toBeInTheDocument(),
             { timeout: 2000 },
         );
-        expect(screen.queryByAltText(card_name)).toBeInTheDocument();
+        expect(screen.queryByAltText(Akki)).toBeInTheDocument();
         expect(screen.getByRole("img")).toBeInTheDocument();
     });
+
     it("renders all card layouts", async () => {
         const cards = [
             "Opt",
             "Delver of Secrets",
-            "Odds",
-            "Budoka Gardener",
+            "Odds // Ends",
+            "Budoka Gardener // Dokai, Weaver of Life",
             "Akoum Warrior",
             "Graf Rats",
             "Blink",
-            "Brazen Borrower",
+            "Brazen Borrower // Petty Theft",
             "Cubwarden",
             "Arcane Proxy",
         ];

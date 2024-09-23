@@ -1,12 +1,8 @@
-import {
-    IScryfallCard,
-    IScryfallCardResult,
-    IScryfallError,
-} from "../types/scryfall/cards";
+import { ScryfallList, ScryfallCard, ScryfallError } from "@scryfall/api-types";
 
 export async function fetchCards(
     cards: Iterable<string>,
-): Promise<IScryfallCard[] | null> {
+): Promise<ScryfallCard.Any[] | null> {
     const cardQueries: string[] = [];
     for (const card of cards) {
         cardQueries.push(`!"${card}"`);
@@ -18,14 +14,14 @@ export async function fetchCards(
     url.search = search.toString();
     try {
         const r = await fetch(url.toString());
-        let data = (await r.json()) as IScryfallCardResult | IScryfallError;
+        let data = (await r.json()) as ScryfallList.Cards | ScryfallError;
 
         if (data.object != "list") return null;
         const fetched_cards = data.data;
 
         while (data.has_more) {
             const r = await fetch(data.next_page);
-            data = (await r.json()) as IScryfallCardResult | IScryfallError;
+            data = (await r.json()) as ScryfallList.Cards | ScryfallError;
 
             if (data.object != "list") return null;
             fetched_cards.concat(data.data);
