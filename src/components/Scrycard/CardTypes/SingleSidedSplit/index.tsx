@@ -1,6 +1,6 @@
 import { useState } from "react";
 import FlipButton from "../../../FlipButton";
-import { IScrycardOptions } from "../../../../types/scrycards/scrycard";
+import { IScrycardOptions } from "../../../../types/scrycard";
 import { ScryfallCard } from "@scryfall/api-types";
 import ImageDisplay from "../../Layouts/Image";
 import Normal from "../../Layouts/Normal";

@@ -5,7 +5,7 @@ import {
 } from "../../../../utils/cardBorder";
 
 import "../layouts.css";
-import { IScrycardLayoutCard } from "../../../../types/scrycards/scrycard";
+import { IScrycardLayoutCard } from "../../../../types/scrycard";
 
 export default function Normal(props: { card: IScrycardLayoutCard }) {
     const card_type = props.card.type_line

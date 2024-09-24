@@ -1,5 +1,5 @@
 import { ScryfallImageUris } from "@scryfall/api-types";
-import { ScrycardSizes } from "../../../../types/scrycards/scrycard";
+import { ScrycardSizes } from "../../../../types/scrycard";
 
 function Image(props: { src: string; alt: string; inverted?: boolean }) {
     return (

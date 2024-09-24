@@ -2,7 +2,7 @@ import { ScryfallCard } from "@scryfall/api-types";
 import {
     IScrycardLayoutCard,
     IScrycardOptions,
-} from "../../../../types/scrycards/scrycard";
+} from "../../../../types/scrycard";
 import { useState } from "react";
 import ImageDisplay from "../../Layouts/Image";
 import FlipButton from "../../../FlipButton";
