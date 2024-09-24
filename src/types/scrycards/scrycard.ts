@@ -25,6 +25,8 @@ interface IScrycardLayoutCard {
     mana_cost: string;
     type_line: string;
     oracle_text: string;
+    power?: string;
+    toughness?: string;
 }
 
 interface IScryNameCardProps extends IScrycardOptions {

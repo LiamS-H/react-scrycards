@@ -33,11 +33,9 @@ export default function FlipCard(props: IFlipCardProps) {
         <>
             <Normal
                 card={{
-                    name: face.name,
+                    ...face,
                     colors: props.card.colors,
                     mana_cost: face.mana_cost ? face.mana_cost : "",
-                    type_line: face.type_line,
-                    oracle_text: face.oracle_text,
                 }}
             />
         </>

@@ -8,6 +8,11 @@ import "../layouts.css";
 import { IScrycardLayoutCard } from "../../../../types/scrycards/scrycard";
 
 export default function Normal(props: { card: IScrycardLayoutCard }) {
+    const card_type = props.card.type_line
+        .split("—")[0]
+        .trim()
+        .split(" ")
+        .slice(-1);
     return (
         <div className="scrytextcard-container">
             <div
@@ -28,7 +33,7 @@ export default function Normal(props: { card: IScrycardLayoutCard }) {
                             : {}
                     }
                 >
-                    {props.card.type_line.split("-")[0]}
+                    {card_type}
                 </div>
                 <div className="scrytextcard-typeline">
                     <span className="scrytextcard-type">
@@ -51,6 +56,11 @@ export default function Normal(props: { card: IScrycardLayoutCard }) {
                               })
                         : null}
                 </div>
+                {props.card.power ? (
+                    <div className="scrytextcard-ptline">
+                        {props.card.power}/{props.card.toughness}
+                    </div>
+                ) : null}
             </div>
         </div>
     );
