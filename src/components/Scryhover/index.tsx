@@ -41,10 +41,16 @@ export default function Scryhover(props: IScryhoverProps) {
             {...(props as React.HTMLProps<HTMLDivElement>)}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
+            className="scryhover-bound"
+            style={{
+                width: "fit-content",
+                height: "fit-content",
+            }}
         >
             <div
+                className="scryhover-transform"
                 style={{
-                    transition: "transform 0.1s ease-out",
+                    transition: "transform 0.2s ease-out",
                     transform: `perspective(1000px) rotateX(${rotation.rotateX}deg) rotateY(${rotation.rotateY}deg)`,
                 }}
             >
