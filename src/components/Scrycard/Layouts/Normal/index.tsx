@@ -6,13 +6,19 @@ import {
 
 import "../layouts.css";
 import { IScrycardLayoutCard } from "../../../../types/scrycard";
+import { cardTypesFromTypeline } from "../../../../utils/cardtype";
+import TypeSymbol from "../TypeSymbol";
+import { ScryfallColor } from "@scryfall/api-types";
+import { colorsFromCost } from "../../../../utils/cardColors";
 
 export default function Normal(props: { card: IScrycardLayoutCard }) {
-    const card_type = props.card.type_line
-        .split("—")[0]
-        .trim()
-        .split(" ")
-        .slice(-1);
+    const card_types = cardTypesFromTypeline(props.card.type_line);
+    if (card_types.includes("Land")) {
+        props.card.colors = props.card.color_identity
+            ? props.card.color_identity
+            : ["C"];
+    }
+    props.card.mana_cost ??= "";
     return (
         <div className="scrytextcard-container">
             <div
@@ -29,11 +35,17 @@ export default function Normal(props: { card: IScrycardLayoutCard }) {
                     className="scrytextcard-imagespacer"
                     style={
                         props.card.colors.length > 2
-                            ? generateCardGradient(props.card.colors)
+                            ? generateCardGradient(
+                                  colorsFromCost(props.card.mana_cost),
+                              )
                             : {}
                     }
                 >
-                    {card_type}
+                    <TypeSymbol
+                        type_line={
+                            props.card.full_type_line || props.card.type_line
+                        }
+                    />
                 </div>
                 <div className="scrytextcard-typeline">
                     <span className="scrytextcard-type">
