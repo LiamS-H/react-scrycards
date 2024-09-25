@@ -2,8 +2,8 @@ import { useState } from "react";
 import FlipButton from "../../../FlipButton";
 import { IScrycardOptions } from "../../../../types/scrycard";
 import { ScryfallCard } from "@scryfall/api-types";
-import ImageDisplay from "../../Layouts/Image";
-import Text from "../../Layouts/Normal";
+import ImageLayout from "../../Layouts/Image";
+import TextLayout from "../../Layouts/Normal";
 
 interface ISplitCardProps extends IScrycardOptions {
     card: ScryfallCard.AnySingleSidedSplit;
@@ -20,7 +20,7 @@ export default function SplitCard(props: ISplitCardProps) {
     if (!props.textOnly && props.card.image_uris) {
         return (
             <>
-                <ImageDisplay
+                <ImageLayout
                     image_uris={props.card.image_uris}
                     size={props.size}
                     card_name={props.card.name}
@@ -31,7 +31,7 @@ export default function SplitCard(props: ISplitCardProps) {
 
     return (
         <>
-            <Text
+            <TextLayout
                 card={{
                     ...face,
                     colors: props.card.colors,
@@ -39,6 +39,7 @@ export default function SplitCard(props: ISplitCardProps) {
                     layout: props.card.layout,
                     full_type_line: props.card.type_line,
                 }}
+                symbol_text_renderer={props.symbol_text_renderer}
             />
             <FlipButton flip={flip} />
         </>

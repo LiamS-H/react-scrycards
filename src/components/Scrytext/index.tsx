@@ -1,9 +1,5 @@
 import React from "react";
-import { useScrycardsContext } from "../../contexts/scrycards";
-
-interface IScrytextProps extends React.HTMLProps<HTMLSpanElement> {
-    children?: string;
-}
+import { IScrytextPrimitiveProps } from "../../types/scrycard";
 
 function Italify(input: string): React.ReactNode[] {
     const chunks = input.split(/(\(.*?\))/);
@@ -13,12 +9,14 @@ function Italify(input: string): React.ReactNode[] {
     });
 }
 
-export default function Scrytext(props: IScrytextProps) {
-    const { symbols } = useScrycardsContext();
+export default function Scrytext(props: IScrytextPrimitiveProps) {
     if (!props.children) return null;
-    if (!symbols) return <span {...props}>{props.children}</span>;
-    if (props.children.length === 0)
+    if (!props.symbols) return <span {...props}>{props.children}</span>;
+
+    if (props.children.length === 0) {
         return <span {...props}>{props.children}</span>;
+    }
+
     const regex = /\{([^}]+)\}/g;
     let match;
     let lastIndex = 0;
@@ -30,7 +28,7 @@ export default function Scrytext(props: IScrytextProps) {
         );
 
         const symbolName = "{" + match[1].toUpperCase() + "}";
-        const symbol = symbols[symbolName];
+        const symbol = props.symbols[symbolName];
         if (symbol) {
             elements.push(
                 <img

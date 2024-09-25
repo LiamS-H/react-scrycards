@@ -2,8 +2,9 @@ import {
     ScryfallCard,
     ScryfallColor,
     ScryfallColors,
-    ScryfallLayout,
+    ScryfallLayoutLike,
 } from "@scryfall/api-types";
+import { ReactNode, HTMLProps } from "react";
 
 type ScrycardSizes = "xs" | "sm" | "md" | "lg" | "xl";
 
@@ -18,6 +19,7 @@ interface IScrycardOptions {
     flipButton?: false;
     textOnly?: true;
     animated?: true;
+    symbol_text_renderer: (props: IScrytextProps) => ReactNode;
 }
 
 interface IScrycardLayoutCard {
@@ -30,11 +32,20 @@ interface IScrycardLayoutCard {
     oracle_text: string;
     power?: string;
     toughness?: string;
-    layout: ScryfallLayout | string;
+    layout: ScryfallLayoutLike;
 }
 
-interface IScryNameCardProps extends IScrycardOptions {
+interface IScryNameCardProps
+    extends Omit<IScrycardOptions, "symbol_text_renderer"> {
     card_name: string;
+}
+
+export interface IScrytextProps extends React.HTMLProps<HTMLSpanElement> {
+    children?: string;
+}
+
+export interface IScrytextPrimitiveProps extends IScrytextProps {
+    symbols: IScrysymbolMap;
 }
 
 interface IScrycardProps extends IScrycardOptions {
