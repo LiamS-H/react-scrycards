@@ -4,7 +4,7 @@ import {
     ScryfallColors,
     ScryfallLayoutLike,
 } from "@scryfall/api-types";
-import { ReactNode, HTMLProps } from "react";
+import { ReactNode } from "react";
 
 type ScrycardSizes = "xs" | "sm" | "md" | "lg" | "xl";
 
