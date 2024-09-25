@@ -105,7 +105,7 @@
     border-radius: 2.7% / 2%;
 }
 .scrycard-error > svg {
-    width: 30%;
+    width: 40%;
     aspect-ratio: 1 / 1;
-    font-size: 350%;
+    font-size: 18px;
 }
