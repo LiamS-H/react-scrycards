@@ -8,7 +8,6 @@ import "../layouts.css";
 import { IScrycardLayoutCard } from "../../../../types/scrycard";
 import { cardTypesFromTypeline } from "../../../../utils/cardtype";
 import TypeSymbol from "../TypeSymbol";
-import { ScryfallColor } from "@scryfall/api-types";
 import { colorsFromCost } from "../../../../utils/cardColors";
 
 export default function Normal(props: { card: IScrycardLayoutCard }) {

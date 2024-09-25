@@ -1,4 +1,3 @@
-import { ScryfallLayout } from "@scryfall/api-types";
 import { ReactNode } from "react";
 import { cardTypesFromTypeline } from "../../../../utils/cardtype";
 

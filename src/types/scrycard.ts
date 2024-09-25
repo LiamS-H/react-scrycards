@@ -1,6 +1,5 @@
 import {
     ScryfallCard,
-    ScryfallCardFields,
     ScryfallColor,
     ScryfallColors,
     ScryfallLayout,
