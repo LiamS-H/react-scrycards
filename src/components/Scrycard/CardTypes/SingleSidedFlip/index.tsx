@@ -1,5 +1,5 @@
 import { useState } from "react";
-import FlipButton from "../../../FlipButton";
+import FlipButton from "../../FlipButton";
 import { IScrycardOptions } from "../../../../types/scrycard";
 import { ScryfallCard, ScryfallLayout } from "@scryfall/api-types";
 import ImageLayout from "../../Layouts/Image";
@@ -41,6 +41,7 @@ export default function FlipCard(props: IFlipCardProps) {
                 }}
                 symbol_text_renderer={props.symbol_text_renderer}
             />
+            <FlipButton flip={flip} />
         </>
     );
 }

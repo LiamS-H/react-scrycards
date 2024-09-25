@@ -2,7 +2,7 @@ import { ScryfallCard } from "@scryfall/api-types";
 import { IScrycardOptions } from "../../../../types/scrycard";
 import { useState } from "react";
 import ImageLayout from "../../Layouts/Image";
-import FlipButton from "../../../FlipButton";
+import FlipButton from "../../FlipButton";
 import TextLayout from "../../Layouts/Normal";
 
 interface DoubleSidedSplitProps extends IScrycardOptions {
