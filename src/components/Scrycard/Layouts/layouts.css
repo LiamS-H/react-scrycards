@@ -48,8 +48,15 @@
     width: 95%;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 5% / 16.4%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
-
+.scrytextcard-imagespacer > svg {
+    height: 100%;
+    /* font-size: 16px; */
+    opacity: 0.1;
+}
 .scrytextcard-oracletext {
     font-size: 100%;
     background-color: rgba(255, 255, 255, 0.8);
@@ -61,4 +68,15 @@
     border-bottom-right-radius: 2%;
     display: flex;
     flex-flow: column;
+}
+.scrytextcard-oracletext > span {
+    padding: 1%;
+}
+.scrytextcard-ptline {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 20% / 20%;
+    font-size: 200%;
 }

@@ -2,6 +2,7 @@ import {
     ScryfallCard,
     ScryfallColor,
     ScryfallColors,
+    ScryfallLayout,
 } from "@scryfall/api-types";
 
 type ScrycardSizes = "xs" | "sm" | "md" | "lg" | "xl";
@@ -21,10 +22,15 @@ interface IScrycardOptions {
 
 interface IScrycardLayoutCard {
     colors: ScryfallColors;
+    color_identity: ScryfallColors;
     name: string;
-    mana_cost: string;
+    mana_cost?: string;
     type_line: string;
+    full_type_line?: string;
     oracle_text: string;
+    power?: string;
+    toughness?: string;
+    layout: ScryfallLayout | string;
 }
 
 interface IScryNameCardProps extends IScrycardOptions {

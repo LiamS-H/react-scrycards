@@ -1,9 +1,6 @@
 import React, { ReactNode } from "react";
 import "./scrycard.css";
-import {
-    IScrycardOptions,
-    IScrycardProps,
-} from "../../types/scrycards/scrycard";
+import { IScrycardOptions, IScrycardProps } from "../../types/scrycard";
 import Scryhover from "../Scryhover";
 import { ScryfallCard } from "@scryfall/api-types";
 import Error from "./CardTypes/Error";

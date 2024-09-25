@@ -7,7 +7,7 @@ import {
 } from "react";
 import { fetchCards } from "../utils/fetchcards";
 import { matchcards } from "../utils/matchcards";
-import { IScrysymbolMap } from "../types/scrycards/scrycard";
+import { IScrysymbolMap } from "../types/scrycard";
 import { fetchsymbols } from "../utils/fetchsymbols";
 import { ScryfallCard } from "@scryfall/api-types";
 

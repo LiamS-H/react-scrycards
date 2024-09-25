@@ -2,7 +2,7 @@ import { ScryfallCard } from "@scryfall/api-types";
 import {
     IScrycardLayoutCard,
     IScrycardOptions,
-} from "../../../../types/scrycards/scrycard";
+} from "../../../../types/scrycard";
 import ImageDisplay from "../../Layouts/Image";
 import Normal from "../../Layouts/Normal";
 

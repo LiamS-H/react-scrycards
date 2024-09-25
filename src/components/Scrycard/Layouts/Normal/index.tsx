@@ -5,9 +5,19 @@ import {
 } from "../../../../utils/cardBorder";
 
 import "../layouts.css";
-import { IScrycardLayoutCard } from "../../../../types/scrycards/scrycard";
+import { IScrycardLayoutCard } from "../../../../types/scrycard";
+import { cardTypesFromTypeline } from "../../../../utils/cardtype";
+import TypeSymbol from "../TypeSymbol";
+import { colorsFromCost } from "../../../../utils/cardColors";
 
 export default function Normal(props: { card: IScrycardLayoutCard }) {
+    const card_types = cardTypesFromTypeline(props.card.type_line);
+    if (card_types.includes("Land")) {
+        props.card.colors = props.card.color_identity
+            ? props.card.color_identity
+            : ["C"];
+    }
+    props.card.mana_cost ??= "";
     return (
         <div className="scrytextcard-container">
             <div
@@ -24,11 +34,17 @@ export default function Normal(props: { card: IScrycardLayoutCard }) {
                     className="scrytextcard-imagespacer"
                     style={
                         props.card.colors.length > 2
-                            ? generateCardGradient(props.card.colors)
+                            ? generateCardGradient(
+                                  colorsFromCost(props.card.mana_cost),
+                              )
                             : {}
                     }
                 >
-                    {props.card.type_line.split("-")[0]}
+                    <TypeSymbol
+                        type_line={
+                            props.card.full_type_line || props.card.type_line
+                        }
+                    />
                 </div>
                 <div className="scrytextcard-typeline">
                     <span className="scrytextcard-type">
@@ -51,6 +67,11 @@ export default function Normal(props: { card: IScrycardLayoutCard }) {
                               })
                         : null}
                 </div>
+                {props.card.power ? (
+                    <div className="scrytextcard-ptline">
+                        {props.card.power}/{props.card.toughness}
+                    </div>
+                ) : null}
             </div>
         </div>
     );

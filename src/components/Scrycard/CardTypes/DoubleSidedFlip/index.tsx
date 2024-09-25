@@ -1,12 +1,9 @@
 import { ScryfallCard } from "@scryfall/api-types";
-import {
-    IScrycardLayoutCard,
-    IScrycardOptions,
-} from "../../../../types/scrycards/scrycard";
+import { IScrycardOptions } from "../../../../types/scrycard";
 import { useState } from "react";
 import ImageDisplay from "../../Layouts/Image";
 import FlipButton from "../../../FlipButton";
-import Normal from "../../Layouts/Normal";
+import Text from "../../Layouts/Normal";
 
 interface DoubleSidedSplitProps extends IScrycardOptions {
     card: ScryfallCard.AnyDoubleSidedSplit;
@@ -34,7 +31,16 @@ export default function DoubleSided(props: DoubleSidedSplitProps) {
     }
     return (
         <>
-            <Normal card={face as IScrycardLayoutCard} />
+            <Text
+                card={{
+                    ...face,
+                    layout: props.card.layout,
+                    color_identity: props.card.color_identity,
+                    full_type_line: props.card.card_faces
+                        .map((face) => face.type_line)
+                        .join(" // "),
+                }}
+            />
             <FlipButton flip={flip} />
         </>
     );
