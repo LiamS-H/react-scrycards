@@ -1,5 +1,11 @@
 # react-scrycards
 
+## 1.1.2
+
+### Patch Changes
+
+-   05f4fa9: update README with css import
+
 ## 1.1.1
 
 ### Patch Changes
