@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function FlipButton(props: { flip: () => void }) {
     return (
         <button onClick={props.flip}>

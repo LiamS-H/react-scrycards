@@ -28,7 +28,7 @@ export async function fetchCards(
         }
         return fetched_cards;
     } catch (error) {
-        console.error("[scrycards] scryfall-error:", error);
+        console.error("[scrycards] scryfall-error fetching cards:", error);
         return null;
     }
 }

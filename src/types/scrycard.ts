@@ -2,22 +2,26 @@ import {
     ScryfallCard,
     ScryfallColor,
     ScryfallColors,
-    ScryfallLayout,
+    ScryfallLayoutLike,
 } from "@scryfall/api-types";
+import { ReactNode } from "react";
 
 type ScrycardSizes = "xs" | "sm" | "md" | "lg" | "xl";
 
 /**
- * @property card_name - The name of the card to be fetched
  * @property size - defaults to medium, all cards are 5 x 7 aspect ratio
+ * @property width - specifies the css property width (overrides height value with aspect ratio)
+ * @property height - specifies the css property height (overriden by width)
+ * @property textOnly - should the card be renderred as text
+ * @property animated - should the card play a hover animation
  */
 interface IScrycardOptions {
     size?: ScrycardSizes;
     width?: string;
     height?: string;
-    flipButton?: false;
     textOnly?: true;
     animated?: true;
+    symbol_text_renderer: (props: IScrytextProps) => ReactNode;
 }
 
 interface IScrycardLayoutCard {
@@ -30,11 +34,20 @@ interface IScrycardLayoutCard {
     oracle_text: string;
     power?: string;
     toughness?: string;
-    layout: ScryfallLayout | string;
+    layout: ScryfallLayoutLike;
 }
 
-interface IScryNameCardProps extends IScrycardOptions {
+interface IScryNameCardProps
+    extends Omit<IScrycardOptions, "symbol_text_renderer"> {
     card_name: string;
+}
+
+export interface IScrytextProps extends React.HTMLProps<HTMLSpanElement> {
+    children?: string;
+}
+
+export interface IScrytextPrimitiveProps extends IScrytextProps {
+    symbols: IScrysymbolMap;
 }
 
 interface IScrycardProps extends IScrycardOptions {

@@ -4,7 +4,7 @@ import {
     ScryfallList,
 } from "@scryfall/api-types";
 
-export async function fetchsymbols(): Promise<ScryfallCardSymbol[] | null> {
+export async function fetchSymbols(): Promise<ScryfallCardSymbol[] | null> {
     const url = new URL("https://api.scryfall.com/symbology");
     try {
         const r = await fetch(url.toString());

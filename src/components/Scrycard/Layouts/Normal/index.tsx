@@ -1,16 +1,22 @@
-import Scrytext from "../../../Scrytext";
 import {
     generateCardBorder,
     generateCardGradient,
 } from "../../../../utils/cardBorder";
 
 import "../layouts.css";
-import { IScrycardLayoutCard } from "../../../../types/scrycard";
-import { cardTypesFromTypeline } from "../../../../utils/cardtype";
+import {
+    IScrycardLayoutCard,
+    IScrytextProps,
+} from "../../../../types/scrycard";
+import { cardTypesFromTypeline } from "../../../../utils/cardType";
 import TypeSymbol from "../TypeSymbol";
 import { colorsFromCost } from "../../../../utils/cardColors";
+import { ReactNode } from "react";
 
-export default function Normal(props: { card: IScrycardLayoutCard }) {
+export default function Normal(props: {
+    card: IScrycardLayoutCard;
+    symbol_text_renderer: (props: IScrytextProps) => ReactNode;
+}) {
     const card_types = cardTypesFromTypeline(props.card.type_line);
     if (card_types.includes("Land")) {
         props.card.colors = props.card.color_identity
@@ -26,9 +32,9 @@ export default function Normal(props: { card: IScrycardLayoutCard }) {
             >
                 <div className="scrytextcard-titleline">
                     <span className="scrytextcard-name">{props.card.name}</span>
-                    <Scrytext className="scrytextcard-mana_cost">
+                    <props.symbol_text_renderer className="scrytextcard-mana_cost">
                         {props.card.mana_cost}
-                    </Scrytext>
+                    </props.symbol_text_renderer>
                 </div>
                 <div
                     className="scrytextcard-imagespacer"
@@ -57,12 +63,12 @@ export default function Normal(props: { card: IScrycardLayoutCard }) {
                               .split("\n")
                               .map((line: string, index: number) => {
                                   return (
-                                      <Scrytext
+                                      <props.symbol_text_renderer
                                           key={`oracle-line[${index}]`}
                                           className="scrytextcard-oracle"
                                       >
                                           {line}
-                                      </Scrytext>
+                                      </props.symbol_text_renderer>
                                   );
                               })
                         : null}

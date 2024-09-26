@@ -66,7 +66,7 @@ describe("ScryCard", () => {
         );
         await waitFor(
             () => expect(screen.queryByAltText("Opt")).toBeInTheDocument(),
-            { timeout: 2000 },
+            { timeout: 5000 },
         );
         for (const card of cards) {
             expect(screen.queryByAltText(card)).toBeInTheDocument();
@@ -95,7 +95,7 @@ describe("ScryCard", () => {
         );
         await waitFor(
             () => expect(screen.queryByText("Opt")).toBeInTheDocument(),
-            { timeout: 2000 },
+            { timeout: 5000 },
         );
         for (const card of cards) {
             expect(screen.queryByText(card)).toBeInTheDocument();

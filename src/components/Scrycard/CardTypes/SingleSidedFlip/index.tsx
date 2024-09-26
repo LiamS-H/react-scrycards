@@ -1,9 +1,9 @@
 import { useState } from "react";
-import FlipButton from "../../../FlipButton";
+import FlipButton from "../../FlipButton";
 import { IScrycardOptions } from "../../../../types/scrycard";
 import { ScryfallCard, ScryfallLayout } from "@scryfall/api-types";
-import ImageDisplay from "../../Layouts/Image";
-import Text from "../../Layouts/Normal";
+import ImageLayout from "../../Layouts/Image";
+import TextLayout from "../../Layouts/Normal";
 
 interface IFlipCardProps extends IScrycardOptions {
     card: ScryfallCard.Flip;
@@ -20,7 +20,7 @@ export default function FlipCard(props: IFlipCardProps) {
     if (!props.textOnly && props.card.image_uris)
         return (
             <>
-                <ImageDisplay
+                <ImageLayout
                     image_uris={props.card.image_uris}
                     inverted={flipped}
                     size={props.size}
@@ -31,7 +31,7 @@ export default function FlipCard(props: IFlipCardProps) {
         );
     return (
         <>
-            <Text
+            <TextLayout
                 card={{
                     ...face,
                     colors: props.card.colors,
@@ -39,7 +39,9 @@ export default function FlipCard(props: IFlipCardProps) {
                     layout: ScryfallLayout.Flip,
                     full_type_line: props.card.type_line,
                 }}
+                symbol_text_renderer={props.symbol_text_renderer}
             />
+            <FlipButton flip={flip} />
         </>
     );
 }

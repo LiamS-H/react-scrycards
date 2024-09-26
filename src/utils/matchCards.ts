@@ -1,4 +1,4 @@
-export function matchcards(cards: Iterable<string>, match: string): string[] {
+export function matchCards(cards: Iterable<string>, match: string): string[] {
     const out_cards: string[] = [];
     match = match.toLowerCase();
     for (let card of cards) {
