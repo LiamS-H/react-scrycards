@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useScrycardsContext } from "../contexts/scrycards";
-import { ScryfallCard } from "@scryfall/api-types";
+import { IScryfallCard } from "../types/scryfall/cards";
 
 function useScrycard(cardname: string) {
     const { requestCard } = useScrycardsContext();
-    const [card, setCard] = useState<ScryfallCard.Any | null | undefined>(null);
+    const [card, setCard] = useState<IScryfallCard | null | undefined>(null);
     async function getCard() {
         const card = await requestCard(cardname);
         setCard(card);

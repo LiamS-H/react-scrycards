@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { fetchCards } from "../src/utils/fetchCards";
+import { fetchCards } from "../src/utils/fetchcards";
 
 describe("fetchcard util", () => {
     it("fetches correct data", async () => {
