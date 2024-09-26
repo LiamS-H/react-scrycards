@@ -1,4 +1,4 @@
-import Loader from "../../Loader";
+import Loader from "./Throbber";
 
 export default function LoadingCard() {
     return <Loader />;

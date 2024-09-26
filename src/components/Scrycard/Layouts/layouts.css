@@ -16,15 +16,24 @@
     align-items: center;
 }
 .scrytextcard-titleline {
+    flex-flow: row;
+    justify-content: space-between;
+}
+.scrytextcard-typeline,
+.scrytextcard-titleline {
     height: 5%;
     width: 98%;
     box-sizing: border-box;
-    display: flex;
-    flex-flow: row;
-    justify-content: space-between;
     margin: 1%;
+    padding-left: 1%;
+    padding-right: 1%;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 1% / 70%;
+    display: flex;
+}
+.scrytextcard-typeline {
+    font-size: 80%;
+    align-items: center;
 }
 .scrytextcard-titleline > span {
     box-sizing: border-box;
@@ -32,24 +41,24 @@
     font-weight: bold;
 }
 .scrytextcard-name {
-    /* letter-spacing: 0.02em; */
+    letter-spacing: 0.02em;
 }
 .scrytextcard-imagespacer {
     height: 20%;
     width: 95%;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 5% / 16.4%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
-.scrytextcard-typeline {
-    height: 5%;
-    width: 98%;
-    box-sizing: border-box;
-    margin: 1%;
-    padding-left: 1%;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 1% / 70%;
+.scrytextcard-imagespacer > svg {
+    height: 100%;
+    /* font-size: 16px; */
+    opacity: 0.1;
 }
 .scrytextcard-oracletext {
+    font-size: 100%;
     background-color: rgba(255, 255, 255, 0.8);
     width: 95%;
     flex-grow: 1;
@@ -57,4 +66,17 @@
     margin-bottom: 1%;
     border-bottom-left-radius: 2%;
     border-bottom-right-radius: 2%;
+    display: flex;
+    flex-flow: column;
+}
+.scrytextcard-oracletext > span {
+    padding: 1%;
+}
+.scrytextcard-ptline {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 20% / 20%;
+    font-size: 200%;
 }

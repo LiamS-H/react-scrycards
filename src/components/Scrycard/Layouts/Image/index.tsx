@@ -1,5 +1,5 @@
-import { ScrycardSizes } from "../../../../types/scrycards/scrycard";
-import { IScryfallCardImages } from "../../../../types/scryfall/cards";
+import { ScryfallImageUris } from "@scryfall/api-types";
+import { ScrycardSizes } from "../../../../types/scrycard";
 
 function Image(props: { src: string; alt: string; inverted?: boolean }) {
     return (
@@ -13,11 +13,11 @@ function Image(props: { src: string; alt: string; inverted?: boolean }) {
 
 export default function ImageDisplay(props: {
     card_name: string;
-    image_uris: IScryfallCardImages;
-    size: ScrycardSizes;
+    image_uris: ScryfallImageUris;
+    size?: ScrycardSizes;
     inverted?: boolean;
 }) {
-    const size = props.size;
+    const size = props.size ? props.size : "md";
     let missing_size = false;
     if (size == "xl") {
         if (props.image_uris.png) {
