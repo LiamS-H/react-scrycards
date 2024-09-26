@@ -5,15 +5,15 @@ import {
     useEffect,
     useState,
 } from "react";
-import { fetchCards } from "../utils/fetchCards";
-import { matchCards } from "../utils/matchCards";
-import { IScrysymbolMap } from "../types/scrycard";
-import { fetchSymbols } from "../utils/fetchSymbols";
-import { ScryfallCard } from "@scryfall/api-types";
+import { IScryfallCard } from "../types/scryfall/cards";
+import { fetchCards } from "../utils/fetchcards";
+import { matchcards } from "../utils/matchcards";
+import { IScrysymbolMap } from "../types/scrycards/scrycard";
+import { fetchsymbols } from "../utils/fetchsymbols";
 
 interface IScrycardsContext {
-    cards: { [key: string]: ScryfallCard.Any | null };
-    requestCard: (arg0: string) => Promise<ScryfallCard.Any | undefined | null>;
+    cards: { [key: string]: IScryfallCard | null };
+    requestCard: (arg0: string) => Promise<IScryfallCard | undefined | null>;
     symbols: IScrysymbolMap;
 }
 
@@ -25,9 +25,9 @@ const ScrycardsContext = createContext<IScrycardsContext>({
 
 function ScrycardsContextProvider(props: { children: ReactNode }) {
     const [needsFetch, setNeedsFetch] = useState<boolean>(false);
-    const [cards, setCards] = useState<{
-        [key: string]: ScryfallCard.Any | null;
-    }>({});
+    const [cards, setCards] = useState<{ [key: string]: IScryfallCard | null }>(
+        {},
+    );
     const [cardNameMap, setCardNameMap] = useState<{ [key: string]: string }>(
         {},
     );
@@ -35,7 +35,7 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
     const [queue, setQueue] = useState<Set<string>>(new Set());
     const [promises, setPromises] = useState<{
         [key: string]: ((
-            arg0: ScryfallCard.Any | Promise<ScryfallCard.Any> | undefined,
+            arg0: IScryfallCard | Promise<IScryfallCard> | undefined,
         ) => void)[];
     }>({});
 
@@ -46,12 +46,12 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
         async function parseCards() {
             let fetched_cards = await fetchCards(queue);
             if (fetched_cards == null) fetched_cards = [];
-            const new_cards: { [key: string]: ScryfallCard.Any } = {};
+            const new_cards: { [key: string]: IScryfallCard } = {};
 
             for (const card of fetched_cards) {
                 new_cards[card.name] = card;
                 if (queue.has(card.name)) continue;
-                matchCards(queue, card.name).forEach((card_name) => {
+                matchcards(queue, card.name).forEach((card_name) => {
                     cardNameMap[card_name] = card.name;
                 });
             }
@@ -87,7 +87,7 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
 
     useEffect(() => {
         async function parseSymbols() {
-            const fetched_symbols = await fetchSymbols();
+            const fetched_symbols = await fetchsymbols();
             if (fetched_symbols == null) {
                 console.error(
                     "[scrycards] something went wrong fetching symbols",
@@ -96,13 +96,15 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
             }
             const new_symbols: IScrysymbolMap = {};
             for (const symbol of fetched_symbols) {
-                if (!symbol.svg_uri) continue;
-                new_symbols[symbol.symbol] = symbol.svg_uri;
+                new_symbols[symbol.symbol] = {
+                    uri: symbol.svg_uri,
+                    description: symbol.english,
+                };
             }
             setSymbols(new_symbols);
         }
         parseSymbols();
-    }, []);
+    });
 
     async function requestCard(cardname: string) {
         const card = cards[cardname];
@@ -114,7 +116,7 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
         setQueue((queue) => queue.add(cardname));
         setNeedsFetch(true);
 
-        const promise = new Promise<ScryfallCard.Any | undefined | null>(
+        const promise = new Promise<IScryfallCard | undefined | null>(
             (resolve) => {
                 setPromises((promises) => {
                     const new_promises = {

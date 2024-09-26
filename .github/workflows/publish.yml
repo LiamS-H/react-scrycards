@@ -23,7 +23,6 @@ jobs:
                   node-version: 20
 
             - run: npm ci
-            - run: npm build
             - name: Create Release Pull Request or Publish
               id: changesets
               uses: changesets/action@v1
