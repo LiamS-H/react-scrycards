@@ -12,6 +12,12 @@ npm install react-scrycards
 
 ## Examples
 
+### Importing CSS
+
+```tsx
+import "react-scrycards/dist/index.css";
+```
+
 ### Base Use Case
 ```tsx
 import { ScrycardsContextProvider, ScryNameCard } from "react-scrycards";

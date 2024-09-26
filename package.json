@@ -13,7 +13,7 @@
         "test": "vitest --run",
         "vitest": "vitest",
         "lint": "eslint 'src/**/*.{ts,tsx}' --max-warnings=0 && echo '✅ No linting issues found!'",
-        "build": "npm run test && tsup src/index.ts --format cjs,esm --dts",
+        "build": "tsup src/index.ts --format cjs,esm --dts",
         "release": "npm run build && npm publish"
     },
     "dependencies": {
