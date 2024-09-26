@@ -8,7 +8,7 @@ import {
     IScrycardLayoutCard,
     IScrytextProps,
 } from "../../../../types/scrycard";
-import { cardTypesFromTypeline } from "../../../../utils/cardtype";
+import { cardTypesFromTypeline } from "../../../../utils/cardType";
 import TypeSymbol from "../TypeSymbol";
 import { colorsFromCost } from "../../../../utils/cardColors";
 import { ReactNode } from "react";

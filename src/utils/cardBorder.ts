@@ -4,7 +4,6 @@ import { colorMap } from "../types/scrycard";
 export function generateCardGradient(
     colors: ScryfallColors,
 ): React.CSSProperties {
-    // const order: ScryfallColor[] = ["B", "U", "G", "R", "W"];
     const order: ScryfallColor[] = [
         ScryfallColor.Black,
         ScryfallColor.Blue,

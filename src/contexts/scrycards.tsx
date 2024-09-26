@@ -5,10 +5,10 @@ import {
     useEffect,
     useState,
 } from "react";
-import { fetchCards } from "../utils/fetchcards";
-import { matchcards } from "../utils/matchcards";
+import { fetchCards } from "../utils/fetchCards";
+import { matchCards } from "../utils/matchCards";
 import { IScrysymbolMap } from "../types/scrycard";
-import { fetchsymbols } from "../utils/fetchsymbols";
+import { fetchSymbols } from "../utils/fetchSymbols";
 import { ScryfallCard } from "@scryfall/api-types";
 
 interface IScrycardsContext {
@@ -51,7 +51,7 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
             for (const card of fetched_cards) {
                 new_cards[card.name] = card;
                 if (queue.has(card.name)) continue;
-                matchcards(queue, card.name).forEach((card_name) => {
+                matchCards(queue, card.name).forEach((card_name) => {
                     cardNameMap[card_name] = card.name;
                 });
             }
@@ -87,7 +87,7 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
 
     useEffect(() => {
         async function parseSymbols() {
-            const fetched_symbols = await fetchsymbols();
+            const fetched_symbols = await fetchSymbols();
             if (fetched_symbols == null) {
                 console.error(
                     "[scrycards] something went wrong fetching symbols",

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { cardTypesFromTypeline } from "../../../../utils/cardtype";
+import { cardTypesFromTypeline } from "../../../../utils/cardType";
 
 function getChar(type: string): string | null {
     switch (type) {
