@@ -2,4 +2,4 @@
 "react-scrycards": patch
 ---
 
-fix publish
+added jsdoc comments

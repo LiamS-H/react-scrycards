@@ -10,7 +10,9 @@ interface IFlipCardProps extends IScrycardOptions {
 }
 
 export default function FlipCard(props: IFlipCardProps) {
-    const [flipped, setFlipped] = useState<boolean>(false);
+    const [flipped, setFlipped] = useState<boolean>(
+        props.flipped || props.inverted || false,
+    );
     function flip() {
         setFlipped((flipped) => !flipped);
     }
@@ -26,7 +28,7 @@ export default function FlipCard(props: IFlipCardProps) {
                     size={props.size}
                     card_name={props.card.name}
                 />
-                <FlipButton flip={flip} />
+                {props.flippable ? <FlipButton flip={flip} /> : null}
             </>
         );
     return (
@@ -41,7 +43,7 @@ export default function FlipCard(props: IFlipCardProps) {
                 }}
                 symbol_text_renderer={props.symbol_text_renderer}
             />
-            <FlipButton flip={flip} />
+            {props.flippable ? <FlipButton flip={flip} /> : null}
         </>
     );
 }
