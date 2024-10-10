@@ -17,11 +17,7 @@ interface IScrycardsContext {
     symbols: IScrysymbolMap;
 }
 
-const ScrycardsContext = createContext<IScrycardsContext>({
-    cards: {},
-    requestCard: async () => undefined,
-    symbols: {},
-});
+const ScrycardsContext = createContext<IScrycardsContext | null>(null);
 
 function ScrycardsContextProvider(props: { children: ReactNode }) {
     const [needsFetch, setNeedsFetch] = useState<boolean>(false);
@@ -149,7 +145,13 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
 }
 
 function useScrycardsContext() {
-    return useContext(ScrycardsContext);
+    const context = useContext(ScrycardsContext);
+    if (!context)
+        throw Error(
+            "[scrycards] useScrycardsContext() must be calle inside provider",
+        );
+
+    return context;
 }
 
 export { ScrycardsContextProvider, useScrycardsContext };
