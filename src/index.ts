@@ -2,6 +2,7 @@ export { useScrycard } from "./hooks/useScrycard";
 export { default as Scrycard } from "./components/Scrycard";
 export { default as Scryhover } from "./components/Scryhover";
 export { default as ScryNameCard } from "./components/ScryNameCard";
+export { default as ScryNameCardText } from "./components/ScryNameCardtext";
 export { default as Scrytext } from "./components/Scrytext";
 export { default as Scrydeck } from "./components/Scrydeck";
 export {
