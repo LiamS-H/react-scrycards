@@ -24,23 +24,16 @@ export default function Scrydeck(props: {
     const size = props.size ? props.size : "md";
 
     const shadows = [];
-    let Xoffset = 0.1;
-    let Yoffset = 0.3;
-    let cards_per_shadow = 5;
-    if (props.count < 5) {
-        Xoffset = 0.02;
-        Yoffset = 0.06;
-        cards_per_shadow = 1;
+    let i = 0;
+    for (; i < props.count - 5; i += 5) {
+        shadows.push(`${i * 0.15}px ${i * 0.45}px 0 #17150f`);
     }
-    for (let i = 1; i < props.count; i += cards_per_shadow) {
-        // const Coffset = -0.625 + ((i * 7) % 25) * 0.25;
-        // shadows.push(
-        //     `${i * Xoffset}px ${i * Yoffset}px 0 rgb(${23 + Coffset},${
-        //         21 + Coffset
-        //     },${15 + Coffset})`,
-        // );
+    for (let j = props.count; j > i; j--) {
+        const offset = props.count - j;
 
-        shadows.push(`${i * Xoffset * 1.5}px ${i * Yoffset * 1.5}px 0 #17150f`);
+        shadows.push(
+            `${(i + offset) * 0.15}px ${(i + offset) * 0.45}px 0 #17150f`,
+        );
     }
 
     style.boxShadow = shadows.join(", ");
