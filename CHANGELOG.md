@@ -1,5 +1,16 @@
 # react-scrycards
 
+## 1.2.0
+
+### Minor Changes
+
+-   525dcc5: add scrydeck
+    add facedown display
+
+### Patch Changes
+
+-   97800a4: added jsdoc comments
+
 ## 1.1.2
 
 ### Patch Changes
