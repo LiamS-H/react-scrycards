@@ -3,12 +3,13 @@ import "./scrycard.css";
 import { IScrycardOptions, IScrycardProps } from "../../types/scrycard";
 import Scryhover from "../Scryhover";
 import { ScryfallCard } from "@scryfall/api-types";
-import Error from "./CardTypes/Error";
+import ErrorCard from "./CardTypes/Error";
 import LoadingCard from "./CardTypes/Loading";
 import SingleFaced from "./CardTypes/SingleFaced";
 import FlipCard from "./CardTypes/SingleSidedFlip";
 import DoubleSided from "./CardTypes/DoubleSidedFlip";
 import SplitCard from "./CardTypes/SingleSidedSplit";
+import FaceDown from "./CardTypes/FaceDown";
 
 interface ICardWrapperProps extends IScrycardOptions {
     children: ReactNode;
@@ -34,6 +35,7 @@ function CardWrapper(props: ICardWrapperProps) {
     const size = props.size ? props.size : "md";
 
     const className = height || width ? "scrycard" : `scrycard-${size}`;
+
     if (!props.animated)
         return (
             <div style={style} className={className}>
@@ -51,13 +53,22 @@ function CardWrapper(props: ICardWrapperProps) {
 
 function compFromCard(
     options: IScrycardOptions,
-    card: ScryfallCard.Any | undefined | null,
+    card: ScryfallCard.Any | undefined | null | false,
 ) {
+    if (options.faceDown || card === false) {
+        return <FaceDown textOnly={options.textOnly} />;
+    }
     if (card === undefined) {
-        return <Error />;
+        return <ErrorCard />;
     }
     if (card === null) {
         return <LoadingCard />;
+    }
+    if (!options.symbol_text_renderer && options.textOnly) {
+        throw Error(
+            `[scrycards] when modifying scrycard primitive a symbol_text_renderer is required for text only.
+            see ScryNameCardText within ScrycardsContext or Scrytext with custom context`,
+        );
     }
     if (!("card_faces" in card)) {
         return <SingleFaced card={card} {...options} />;

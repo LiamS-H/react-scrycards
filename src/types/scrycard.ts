@@ -8,6 +8,8 @@ import { ReactNode } from "react";
 
 type ScrycardSizes = "xs" | "sm" | "md" | "lg" | "xl";
 
+type ScrycardsSymbolTextRenderer = (props: IScrytextProps) => ReactNode;
+
 /**
  * @property {ScrycardSizes} size - defaults to medium, all cards are 5 x 7 aspect ratio
  * @property {string} width - specifies the css property width (overrides height value with aspect ratio)
@@ -18,6 +20,8 @@ type ScrycardSizes = "xs" | "sm" | "md" | "lg" | "xl";
  * @property {boolean} inverted - should the card be displayed upside down
  * @property {boolean} tapped - should the card be displayed sideways
  * @property {boolean} flipped - should the card be displayed on its alternate face
+ * @property {boolean} faceDown - should the card be displayed on its alternate face
+ * @property {ScrycardsSymbolTextRenderer} symbol_text_renderer - function to replace symbol names with symbol svgs
  */
 interface IScrycardOptions {
     size?: ScrycardSizes;
@@ -29,7 +33,8 @@ interface IScrycardOptions {
     inverted?: boolean;
     tapped?: boolean;
     flipped?: boolean;
-    symbol_text_renderer: (props: IScrytextProps) => ReactNode;
+    faceDown?: boolean;
+    symbol_text_renderer: ScrycardsSymbolTextRenderer;
 }
 
 interface IScrycardLayoutCard {
@@ -58,14 +63,14 @@ interface IScryNameCardProps
 /**
  * @property {string} children - string with text to be converted to symbols
  */
-export interface IScrytextProps extends React.HTMLProps<HTMLSpanElement> {
+interface IScrytextProps extends React.HTMLProps<HTMLSpanElement> {
     children?: string;
 }
 
 /**
  * @property {IScrysymbolMap} symbols - this value should be cached not fetched
  */
-export interface IScrytextPrimitiveProps extends IScrytextProps {
+interface IScrytextPrimitiveProps extends IScrytextProps {
     symbols: IScrysymbolMap;
 }
 
@@ -93,9 +98,12 @@ export type {
     IScryNameCardProps,
     IScrycardProps,
     IScrycardOptions,
-    ScrycardSizes,
     IScrysymbolMap,
     IScrycardLayoutCard,
+    IScrytextProps,
+    IScrytextPrimitiveProps,
+    ScrycardSizes,
+    ScrycardsSymbolTextRenderer,
 };
 export const colorMap: Record<ScryfallColor, string> = {
     U: "#1E90FF",

@@ -1,6 +1,8 @@
 .scrycard {
     display: flex;
     position: relative;
+    justify-content: center;
+    align-items: center;
     background-color: #17150f;
     border-radius: 4.75% / 3.5%;
     aspect-ratio: 5 / 7;
@@ -8,6 +10,8 @@
 [class^="scrycard-"] {
     display: flex;
     position: relative;
+    justify-content: center;
+    align-items: center;
     background-color: #17150f;
     border-radius: 4.75% / 3.5%;
     aspect-ratio: 5 / 7;
@@ -104,6 +108,23 @@
     align-items: center;
     border-radius: 2.7% / 2%;
 }
+.scrycard-facedown {
+    height: 94%;
+    width: 91%;
+    opacity: 0.5;
+    justify-content: center;
+    align-items: center;
+    background-color: #845d1f;
+    border-radius: 2.7% / 2%;
+}
+.scrycard-facedown > div {
+    background-color: #9c512f;
+    width: 90%;
+    height: 90%;
+    border: 1px solid blue;
+    border-radius: 50%;
+}
+
 .scrycard-error > svg {
     width: 40%;
     aspect-ratio: 1 / 1;
