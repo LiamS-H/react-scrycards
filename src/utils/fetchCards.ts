@@ -1,19 +1,44 @@
 import { ScryfallList, ScryfallCard, ScryfallError } from "@scryfall/api-types";
 
 export async function fetchCards(
-    cards: Iterable<string>,
+    cards_set: Iterable<string>,
 ): Promise<ScryfallCard.Any[] | null> {
-    const cardQueries: string[] = [];
-    for (const card of cards) {
-        cardQueries.push(`!"${card}"`);
+    const cards: string[] = Array.from(cards_set);
+    if (cards.length > 75) {
+        const card_promises = [];
+        for (let i = 0; i < cards.length; i += 75) {
+            card_promises.push(fetchCards(cards.slice(i, 75)));
+        }
+        const card_lists = (await Promise.all(card_promises)).filter(
+            (c) => !!c,
+        );
+        return card_lists.flat();
     }
-    const query = cardQueries.join("or");
 
-    const search = new URLSearchParams({ q: query });
-    const url = new URL("https://api.scryfall.com/cards/search");
-    url.search = search.toString();
+    const cardQueries: { name: string }[] = [];
+    for (const card_name of cards) {
+        let formatted_card = card_name;
+        if (card_name.includes("//")) {
+            formatted_card = card_name.split("//")[0].trim();
+        }
+        cardQueries.push({
+            name: formatted_card,
+        });
+    }
+    const body = JSON.stringify({ identifiers: cardQueries });
+
+    const url = new URL("https://api.scryfall.com/cards/collection");
+    // const search = new URLSearchParams({ indentifiers: query });
+    // url.search = search.toString();
+
     try {
-        const r = await fetch(url.toString());
+        const r = await fetch(url.toString(), {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: body,
+        });
         let data = (await r.json()) as ScryfallList.Cards | ScryfallError;
 
         if (data.object != "list") return null;

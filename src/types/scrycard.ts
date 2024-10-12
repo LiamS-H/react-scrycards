@@ -8,12 +8,20 @@ import { ReactNode } from "react";
 
 type ScrycardSizes = "xs" | "sm" | "md" | "lg" | "xl";
 
+type ScrycardsSymbolTextRenderer = (props: IScrytextProps) => ReactNode;
+
 /**
- * @property size - defaults to medium, all cards are 5 x 7 aspect ratio
- * @property width - specifies the css property width (overrides height value with aspect ratio)
- * @property height - specifies the css property height (overriden by width)
- * @property textOnly - should the card be renderred as text
- * @property animated - should the card play a hover animation
+ * @property {ScrycardSizes} size - defaults to medium, all cards are 5 x 7 aspect ratio
+ * @property {string} width - specifies the css property width (overrides height value with aspect ratio)
+ * @property {string} height - specifies the css property height (overriden by width)
+ * @property {true} textOnly - should the card be renderred as text
+ * @property {true} animated - should the card play a hover animation
+ * @property {true} flippable - should the card display a flip button
+ * @property {boolean} inverted - should the card be displayed upside down
+ * @property {boolean} tapped - should the card be displayed sideways
+ * @property {boolean} flipped - should the card be displayed on its alternate face
+ * @property {boolean} faceDown - should the card be displayed on its alternate face
+ * @property {ScrycardsSymbolTextRenderer} symbol_text_renderer - function to replace symbol names with symbol svgs
  */
 interface IScrycardOptions {
     size?: ScrycardSizes;
@@ -21,7 +29,12 @@ interface IScrycardOptions {
     height?: string;
     textOnly?: true;
     animated?: true;
-    symbol_text_renderer: (props: IScrytextProps) => ReactNode;
+    flippable?: true;
+    inverted?: boolean;
+    tapped?: boolean;
+    flipped?: boolean;
+    faceDown?: boolean;
+    symbol_text_renderer: ScrycardsSymbolTextRenderer;
 }
 
 interface IScrycardLayoutCard {
@@ -37,33 +50,60 @@ interface IScrycardLayoutCard {
     layout: ScryfallLayoutLike;
 }
 
+/**
+ * Props for the ScryNameCard component.
+ * @property {string} card_name - The name of the card.
+ * @extends IScrycardOptions
+ */
 interface IScryNameCardProps
     extends Omit<IScrycardOptions, "symbol_text_renderer"> {
     card_name: string;
 }
 
-export interface IScrytextProps extends React.HTMLProps<HTMLSpanElement> {
+/**
+ * @property {string} children - string with text to be converted to symbols
+ */
+interface IScrytextProps extends React.HTMLProps<HTMLSpanElement> {
     children?: string;
 }
 
-export interface IScrytextPrimitiveProps extends IScrytextProps {
+/**
+ * @property {IScrysymbolMap} symbols - this value should be cached not fetched
+ */
+interface IScrytextPrimitiveProps extends IScrytextProps {
     symbols: IScrysymbolMap;
 }
 
+/**
+ * Props for the ScryNameCard component.
+ * @property {ScryfallCard.Any} card - a card object to render.
+ * @extends IScrycardOptions
+ */
 interface IScrycardProps extends IScrycardOptions {
     card: ScryfallCard.Any | null | undefined;
 }
 
+/**
+ * A map between text representation and image URI
+ * @example { "{T}": "https://svgs.scryfall.io/card-symbols/T.svg" }
+ */
 interface IScrysymbolMap {
+    /**
+     * @type {string} key - text representation of symbol
+     * @type {string} value - svg uri of image
+     */
     [key: string]: string;
 }
 export type {
     IScryNameCardProps,
     IScrycardProps,
     IScrycardOptions,
-    ScrycardSizes,
     IScrysymbolMap,
     IScrycardLayoutCard,
+    IScrytextProps,
+    IScrytextPrimitiveProps,
+    ScrycardSizes,
+    ScrycardsSymbolTextRenderer,
 };
 export const colorMap: Record<ScryfallColor, string> = {
     U: "#1E90FF",
