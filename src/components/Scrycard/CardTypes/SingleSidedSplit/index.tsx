@@ -10,7 +10,7 @@ interface ISplitCardProps extends IScrycardOptions {
 }
 
 export default function SplitCard(props: ISplitCardProps) {
-    const [flipped, setFlipped] = useState<boolean>(false);
+    const [flipped, setFlipped] = useState<boolean>(props.flipped || false);
     function flip() {
         setFlipped((flipped) => !flipped);
     }
@@ -41,7 +41,7 @@ export default function SplitCard(props: ISplitCardProps) {
                 }}
                 symbol_text_renderer={props.symbol_text_renderer}
             />
-            <FlipButton flip={flip} />
+            {props.flippable ? <FlipButton flip={flip} /> : null}
         </>
     );
 }
