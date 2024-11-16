@@ -1,5 +1,5 @@
 import React from "react";
-import { IScrytextPrimitiveProps } from "../../types/scrycard";
+import type { IScrytextPrimitiveProps } from "../../types/scrycard";
 
 function Italify(input: string): React.ReactNode[] {
     const chunks = input.split(/(\(.*?\))/);

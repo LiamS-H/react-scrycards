@@ -1,4 +1,4 @@
-import { ScryfallCard } from "@scryfall/api-types";
+import type { ScryfallCard } from "@scryfall/api-types";
 import {
     IScrycardLayoutCard,
     IScrycardOptions,

@@ -7,9 +7,9 @@ import {
 } from "react";
 import { fetchCards } from "../utils/fetchCards";
 import { matchCards } from "../utils/matchCards";
-import { IScrysymbolMap } from "../types/scrycard";
+import type { IScrysymbolMap } from "../types/scrycard";
 import { fetchSymbols } from "../utils/fetchSymbols";
-import { ScryfallCard } from "@scryfall/api-types";
+import type { ScryfallCard } from "@scryfall/api-types";
 
 interface IScrycardsContext {
     cards: { [key: string]: ScryfallCard.Any | null };

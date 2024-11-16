@@ -1,5 +1,5 @@
 import { useScrycardsContext } from "../../contexts/scrycards";
-import { IScrytextProps } from "../../types/scrycard";
+import type { IScrytextProps } from "../../types/scrycard";
 import Scrytext from "../Scrytext";
 
 export default function ScryNameCardText(props: IScrytextProps) {
