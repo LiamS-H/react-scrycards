@@ -1,4 +1,8 @@
-import { ScryfallList, ScryfallCard, ScryfallError } from "@scryfall/api-types";
+import type {
+    ScryfallList,
+    ScryfallCard,
+    ScryfallError,
+} from "@scryfall/api-types";
 
 export async function fetchCards(
     cards_set: Iterable<string>,

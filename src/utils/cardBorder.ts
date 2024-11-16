@@ -1,4 +1,5 @@
-import { ScryfallColor, ScryfallColors } from "@scryfall/api-types";
+import type { ScryfallColors } from "@scryfall/api-types";
+import { ScryfallColor } from "@scryfall/api-types";
 import { colorMap } from "../types/scrycard";
 
 export function generateCardGradient(

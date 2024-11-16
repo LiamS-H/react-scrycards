@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 
 interface IScryhoverProps extends React.HTMLProps<HTMLDivElement> {
     children?: React.ReactNode;
