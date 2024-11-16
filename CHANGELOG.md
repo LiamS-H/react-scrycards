@@ -1,5 +1,11 @@
 # react-scrycards
 
+## 1.2.2
+
+### Patch Changes
+
+-   2cb8a2b: remove all scryfall imports (from js)
+
 ## 1.2.1
 
 ### Patch Changes
