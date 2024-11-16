@@ -1,18 +1,11 @@
 import type { ScryfallColors } from "@scryfall/api-types";
-import { ScryfallColor } from "@scryfall/api-types";
 import { colorMap } from "../types/scrycard";
 
 export function generateCardGradient(
     colors: ScryfallColors,
 ): React.CSSProperties {
-    const order: ScryfallColor[] = [
-        ScryfallColor.Black,
-        ScryfallColor.Blue,
-        ScryfallColor.Green,
-        ScryfallColor.Red,
-        ScryfallColor.White,
-    ];
-    const ordered_colors: ScryfallColor[] = [];
+    const order: ScryfallColors = ["B", "U", "G", "R", "W"];
+    const ordered_colors: ScryfallColors = [];
     for (const color of order) {
         if (colors.includes(color)) {
             ordered_colors.push(color);
