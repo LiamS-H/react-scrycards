@@ -1,5 +1,11 @@
 # react-scrycards
 
+## 1.2.1
+
+### Patch Changes
+
+-   aa67fb3: switch Scryfall type import to type
+
 ## 1.2.0
 
 ### Minor Changes
