@@ -1,6 +1,6 @@
 import type {
     ScryfallCard,
-    ScryfallColor,
+    ScryfallColorLike,
     ScryfallColors,
     ScryfallLayoutLike,
 } from "@scryfall/api-types";
@@ -105,7 +105,7 @@ export type {
     ScrycardSizes,
     ScrycardsSymbolTextRenderer,
 };
-export const colorMap: Record<ScryfallColor, string> = {
+export const colorMap: Record<ScryfallColorLike, string> = {
     U: "#1E90FF",
     W: "#dbd7a7",
     B: "#000000",
