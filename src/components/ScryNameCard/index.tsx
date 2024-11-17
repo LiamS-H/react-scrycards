@@ -1,5 +1,8 @@
 import { useScrycard } from "../../hooks/useScrycard";
-import { IScrycardOptions, IScryNameCardProps } from "../../types/scrycard";
+import type {
+    IScrycardOptions,
+    IScryNameCardProps,
+} from "../../types/scrycard";
 import Scrycard from "../Scrycard";
 import ScryNameCardText from "../ScryNameCardtext";
 

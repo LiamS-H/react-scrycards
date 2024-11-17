@@ -4,7 +4,7 @@ import {
 } from "../../../../utils/cardBorder";
 
 import "../layouts.css";
-import {
+import type {
     IScrycardLayoutCard,
     IScrytextProps,
 } from "../../../../types/scrycard";

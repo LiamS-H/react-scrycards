@@ -1,4 +1,4 @@
-import {
+import type {
     ScryfallCardSymbol,
     ScryfallError,
     ScryfallList,

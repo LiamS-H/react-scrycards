@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ScrycardSizes } from "../../types/scrycard";
+import type { ScrycardSizes } from "../../types/scrycard";
 
 import "../Scrycard/scrycard.css";
 

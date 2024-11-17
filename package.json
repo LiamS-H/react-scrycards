@@ -1,6 +1,6 @@
 {
     "name": "react-scrycards",
-    "version": "1.1.2",
+    "version": "1.2.2",
     "type": "module",
     "license": "MIT",
     "main": "dist/index.cjs",
@@ -22,7 +22,6 @@
         "react-dom": "^18.3.1"
     },
     "peerDependencies": {
-        "tsup": "^8.3.0",
         "typescript": "^5.6.2"
     },
     "devDependencies": {
@@ -35,6 +34,7 @@
         "globals": "^15.9.0",
         "jsdom": "^25.0.0",
         "typescript-eslint": "^8.6.0",
+        "tsup": "^8.3.0",
         "vitest": "^2.1.1"
     }
 }

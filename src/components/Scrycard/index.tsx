@@ -1,8 +1,8 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import "./scrycard.css";
-import { IScrycardOptions, IScrycardProps } from "../../types/scrycard";
+import type { IScrycardOptions, IScrycardProps } from "../../types/scrycard";
 import Scryhover from "../Scryhover";
-import { ScryfallCard } from "@scryfall/api-types";
+import type { ScryfallCard } from "@scryfall/api-types";
 import ErrorCard from "./CardTypes/Error";
 import LoadingCard from "./CardTypes/Loading";
 import SingleFaced from "./CardTypes/SingleFaced";

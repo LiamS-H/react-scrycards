@@ -1,8 +1,8 @@
-import { ScryfallColor, ScryfallColors } from "@scryfall/api-types";
+import type { ScryfallColorLike, ScryfallColors } from "@scryfall/api-types";
 
 const colors = new Set(["W", "U", "B", "R", "G"]);
 
-export function isColor(color: string): color is ScryfallColor {
+export function isColor(color: string): color is ScryfallColorLike {
     if (color.length > 1) {
         throw new Error("isColor() accepts only chars");
     }
@@ -10,7 +10,7 @@ export function isColor(color: string): color is ScryfallColor {
 }
 
 export function colorsFromCost(cost: string): ScryfallColors {
-    const matches = new Set<ScryfallColor>();
+    const matches = new Set<ScryfallColorLike>();
     const regex = /\{([WUBRGC])\/?[WUBRGC]?\}/g;
 
     let match;

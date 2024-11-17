@@ -1,5 +1,28 @@
 # react-scrycards
 
+## 1.2.2
+
+### Patch Changes
+
+-   2cb8a2b: remove all scryfall imports (from js)
+
+## 1.2.1
+
+### Patch Changes
+
+-   aa67fb3: switch Scryfall type import to type
+
+## 1.2.0
+
+### Minor Changes
+
+-   525dcc5: add scrydeck
+    add facedown display
+
+### Patch Changes
+
+-   97800a4: added jsdoc comments
+
 ## 1.1.2
 
 ### Patch Changes

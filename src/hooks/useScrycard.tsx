@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useScrycardsContext } from "../contexts/scrycards";
-import { ScryfallCard } from "@scryfall/api-types";
+import type { ScryfallCard } from "@scryfall/api-types";
 
 function useScrycard(cardname: string) {
     const { requestCard } = useScrycardsContext();
