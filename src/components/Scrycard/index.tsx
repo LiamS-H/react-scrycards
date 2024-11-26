@@ -56,7 +56,7 @@ function compFromCard(
     card: ScryfallCard.Any | undefined | null | false,
 ) {
     if (options.faceDown || card === false) {
-        return <FaceDown textOnly={options.textOnly} />;
+        return <FaceDown textOnly={options.textOnly} size={options.size} />;
     }
     if (card === undefined) {
         return <ErrorCard />;
@@ -83,8 +83,13 @@ function compFromCard(
 }
 
 export default function Scrycard(props: IScrycardProps) {
-    const options = props as IScrycardOptions;
+    const options = {
+        ...props,
+        imageLink:
+            props.imageLink == "auto"
+                ? props.card?.scryfall_uri
+                : props.imageLink,
+    } as IScrycardOptions;
     const card = compFromCard(options, props.card);
-
     return <CardWrapper {...options}>{card}</CardWrapper>;
 }
