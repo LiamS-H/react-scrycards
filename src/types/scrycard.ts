@@ -34,7 +34,7 @@ interface IScrycardOptions {
     tapped?: boolean;
     flipped?: boolean;
     faceDown?: boolean;
-    symbol_text_renderer: ScrycardsSymbolTextRenderer;
+    symbol_text_renderer?: ScrycardsSymbolTextRenderer;
 }
 
 interface IScrycardLayoutCard {

@@ -15,7 +15,7 @@ import { ReactNode } from "react";
 
 export default function Normal(props: {
     card: IScrycardLayoutCard;
-    symbol_text_renderer: (props: IScrytextProps) => ReactNode;
+    symbol_text_renderer?: (props: IScrytextProps) => ReactNode;
 }) {
     const card_types = cardTypesFromTypeline(props.card.type_line);
     if (card_types.includes("Land")) {
@@ -23,6 +23,12 @@ export default function Normal(props: {
             ? props.card.color_identity
             : ["C"];
     }
+    const TextRenderer =
+        props.symbol_text_renderer ||
+        function (props: IScrytextProps) {
+            return props.children;
+        };
+
     props.card.mana_cost ??= "";
     return (
         <div className="scrytextcard-container">
@@ -32,9 +38,9 @@ export default function Normal(props: {
             >
                 <div className="scrytextcard-titleline">
                     <span className="scrytextcard-name">{props.card.name}</span>
-                    <props.symbol_text_renderer className="scrytextcard-mana_cost">
+                    <TextRenderer className="scrytextcard-mana_cost">
                         {props.card.mana_cost}
-                    </props.symbol_text_renderer>
+                    </TextRenderer>
                 </div>
                 <div
                     className="scrytextcard-imagespacer"
@@ -63,12 +69,12 @@ export default function Normal(props: {
                               .split("\n")
                               .map((line: string, index: number) => {
                                   return (
-                                      <props.symbol_text_renderer
+                                      <TextRenderer
                                           key={`oracle-line[${index}]`}
                                           className="scrytextcard-oracle"
                                       >
                                           {line}
-                                      </props.symbol_text_renderer>
+                                      </TextRenderer>
                                   );
                               })
                         : null}
