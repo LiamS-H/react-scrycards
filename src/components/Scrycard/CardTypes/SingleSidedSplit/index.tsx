@@ -42,7 +42,9 @@ export default function SplitCard(props: ISplitCardProps) {
                 }}
                 symbol_text_renderer={props.symbol_text_renderer}
             />
-            {props.flippable ? <FlipButton flip={flip} /> : null}
+            {props.flippable ? (
+                <FlipButton flip={flip} flipIcon={props.flipIcon} />
+            ) : null}
         </>
     );
 }

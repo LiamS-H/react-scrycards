@@ -27,7 +27,9 @@ export default function DoubleSided(props: DoubleSidedSplitProps) {
                     size={props.size}
                     inverted={props.inverted}
                 />
-                {props.flippable ? <FlipButton flip={flip} /> : null}
+                {props.flippable ? (
+                    <FlipButton flip={flip} flipIcon={props.flipIcon} />
+                ) : null}
             </>
         );
     }
@@ -44,7 +46,9 @@ export default function DoubleSided(props: DoubleSidedSplitProps) {
                 }}
                 symbol_text_renderer={props.symbol_text_renderer}
             />
-            {props.flippable ? <FlipButton flip={flip} /> : null}
+            {props.flippable ? (
+                <FlipButton flip={flip} flipIcon={props.flipIcon} />
+            ) : null}
         </>
     );
 }

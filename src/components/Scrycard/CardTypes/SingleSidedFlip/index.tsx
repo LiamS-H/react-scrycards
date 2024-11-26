@@ -28,7 +28,9 @@ export default function FlipCard(props: IFlipCardProps) {
                     size={props.size}
                     card_name={props.card.name}
                 />
-                {props.flippable ? <FlipButton flip={flip} /> : null}
+                {props.flippable ? (
+                    <FlipButton flip={flip} flipIcon={props.flipIcon} />
+                ) : null}
             </>
         );
     return (
@@ -43,7 +45,9 @@ export default function FlipCard(props: IFlipCardProps) {
                 }}
                 symbol_text_renderer={props.symbol_text_renderer}
             />
-            {props.flippable ? <FlipButton flip={flip} /> : null}
+            {props.flippable ? (
+                <FlipButton flip={flip} flipIcon={props.flipIcon} />
+            ) : null}
         </>
     );
 }

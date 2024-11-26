@@ -35,6 +35,7 @@ interface IScrycardOptions {
     flipped?: boolean;
     faceDown?: boolean;
     symbol_text_renderer?: ScrycardsSymbolTextRenderer;
+    flipIcon?: ReactNode;
 }
 
 interface IScrycardLayoutCard {
