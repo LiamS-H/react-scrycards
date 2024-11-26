@@ -26,7 +26,7 @@ export default function Normal(props: {
     const TextRenderer =
         props.symbol_text_renderer ||
         function (props: IScrytextProps) {
-            return props.children;
+            return props.children ? props.children : null;
         };
 
     props.card.mana_cost ??= "";

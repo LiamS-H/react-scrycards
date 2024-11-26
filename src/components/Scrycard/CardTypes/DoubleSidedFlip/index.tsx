@@ -10,12 +10,12 @@ interface DoubleSidedSplitProps extends IScrycardOptions {
 }
 
 export default function DoubleSided(props: DoubleSidedSplitProps) {
-    const [side, setSide] = useState<number>(props.flipped ? 1 : 0);
+    const [flipped, setFlipped] = useState<boolean>(false);
+    const side = props.flipped || flipped ? 1 : 0;
     const face = props.card.card_faces[side];
-    const sides = props.card.card_faces.length;
 
     function flip() {
-        setSide((side) => (side + 1) % sides);
+        setFlipped((f) => !f);
     }
 
     if (!props.textOnly && face.image_uris) {
