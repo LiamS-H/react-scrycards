@@ -16,7 +16,7 @@ export default function FlipCard(props: IFlipCardProps) {
     function flip() {
         setFlipped((flipped) => !flipped);
     }
-    const side = flipped ? 1 : 0;
+    const side = props.flipped || flipped ? 1 : 0;
     const face = props.card.card_faces[side];
 
     if (!props.textOnly && props.card.image_uris)
@@ -24,11 +24,14 @@ export default function FlipCard(props: IFlipCardProps) {
             <>
                 <ImageLayout
                     image_uris={props.card.image_uris}
-                    inverted={flipped}
+                    inverted={props.flipped || flipped}
                     size={props.size}
                     card_name={props.card.name}
+                    link={props.imageLink}
                 />
-                {props.flippable ? <FlipButton flip={flip} /> : null}
+                {props.flippable ? (
+                    <FlipButton flip={flip} flipIcon={props.flipIcon} />
+                ) : null}
             </>
         );
     return (
@@ -43,7 +46,9 @@ export default function FlipCard(props: IFlipCardProps) {
                 }}
                 symbol_text_renderer={props.symbol_text_renderer}
             />
-            {props.flippable ? <FlipButton flip={flip} /> : null}
+            {props.flippable ? (
+                <FlipButton flip={flip} flipIcon={props.flipIcon} />
+            ) : null}
         </>
     );
 }
