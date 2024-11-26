@@ -1,5 +1,16 @@
 # react-scrycards
 
+## 1.3.0
+
+### Minor Changes
+
+-   e2c3ef2: new fields to control Scrycard state
+-   1ca7b5e: move react to peer dependency
+
+### Patch Changes
+
+-   3c5729a: add facedown card images and controlled state
+
 ## 1.2.2
 
 ### Patch Changes
