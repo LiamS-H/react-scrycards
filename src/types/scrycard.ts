@@ -22,6 +22,8 @@ type ScrycardsSymbolTextRenderer = (props: IScrytextProps) => ReactNode;
  * @property {boolean} flipped - should the card be displayed on its alternate face
  * @property {boolean} faceDown - should the card be displayed on its alternate face
  * @property {ScrycardsSymbolTextRenderer} symbol_text_renderer - function to replace symbol names with symbol svgs
+ * @property {ReactNode} flipIcon - a ReactNode to be renderred as the flip icon for flippable cards
+ * @property {"auto" | string } link - "auto" uses the Scryfall Link automatically
  */
 interface IScrycardOptions {
     size?: ScrycardSizes;
@@ -36,6 +38,7 @@ interface IScrycardOptions {
     faceDown?: boolean;
     symbol_text_renderer?: ScrycardsSymbolTextRenderer;
     flipIcon?: ReactNode;
+    imageLink?: "auto" | string;
 }
 
 interface IScrycardLayoutCard {
