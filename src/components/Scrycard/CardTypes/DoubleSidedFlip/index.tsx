@@ -26,6 +26,7 @@ export default function DoubleSided(props: DoubleSidedSplitProps) {
                     image_uris={face.image_uris}
                     size={props.size}
                     inverted={props.inverted}
+                    link={props.imageLink}
                 />
                 {props.flippable ? (
                     <FlipButton flip={flip} flipIcon={props.flipIcon} />

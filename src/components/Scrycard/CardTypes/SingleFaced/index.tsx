@@ -17,6 +17,7 @@ export default function SingleFaced(props: ISingleFacedProps) {
                 card_name={props.card.name}
                 image_uris={props.card.image_uris}
                 size={props.size}
+                link={props.imageLink}
             />
         );
     }

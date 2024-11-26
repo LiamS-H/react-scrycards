@@ -25,6 +25,7 @@ export default function SplitCard(props: ISplitCardProps) {
                     image_uris={props.card.image_uris}
                     size={props.size}
                     card_name={props.card.name}
+                    link={props.imageLink}
                 />
             </>
         );

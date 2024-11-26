@@ -83,7 +83,13 @@ function compFromCard(
 }
 
 export default function Scrycard(props: IScrycardProps) {
-    const options = props as IScrycardOptions;
+    const options = {
+        ...props,
+        imageLink:
+            props.imageLink == "auto"
+                ? props.card?.scryfall_uri
+                : props.imageLink,
+    } as IScrycardOptions;
     const card = compFromCard(options, props.card);
     return <CardWrapper {...options}>{card}</CardWrapper>;
 }

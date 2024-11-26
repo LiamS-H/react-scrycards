@@ -27,6 +27,7 @@ export default function FlipCard(props: IFlipCardProps) {
                     inverted={props.flipped || flipped}
                     size={props.size}
                     card_name={props.card.name}
+                    link={props.imageLink}
                 />
                 {props.flippable ? (
                     <FlipButton flip={flip} flipIcon={props.flipIcon} />
