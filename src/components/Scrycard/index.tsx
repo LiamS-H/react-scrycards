@@ -31,6 +31,7 @@ function CardWrapper(props: ICardWrapperProps) {
     const style: React.CSSProperties = {};
     if (width) style.width = width;
     if (height) style.height = height;
+    if (props.tapped) style.transform = "rotate(90deg)";
 
     const size = props.size ? props.size : "md";
 
