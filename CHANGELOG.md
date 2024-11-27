@@ -1,5 +1,11 @@
 # react-scrycards
 
+## 1.3.1
+
+### Patch Changes
+
+-   2ab7f72: added missing style for tapped card
+
 ## 1.3.0
 
 ### Minor Changes
