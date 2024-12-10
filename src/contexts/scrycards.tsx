@@ -10,10 +10,12 @@ import { matchCards } from "../utils/matchCards";
 import type { IScrysymbolMap } from "../types/scrycard";
 import { fetchSymbols } from "../utils/fetchSymbols";
 import type { ScryfallCard } from "@scryfall/api-types";
+import { isUUID } from "../utils/isUUID";
 
 interface IScrycardsContext {
     cards: { [key: string]: ScryfallCard.Any | null };
     requestCard: (arg0: string) => Promise<ScryfallCard.Any | undefined | null>;
+    preloadCards: (arg0: string[]) => void;
     symbols: IScrysymbolMap;
 }
 
@@ -45,10 +47,11 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
             const new_cards: { [key: string]: ScryfallCard.Any } = {};
 
             for (const card of fetched_cards) {
-                new_cards[card.name] = card;
-                if (queue.has(card.name)) continue;
+                const id = card.id;
+                new_cards[id] = card;
+                if (queue.has(id)) continue;
                 matchCards(queue, card.name).forEach((card_name) => {
-                    cardNameMap[card_name] = card.name;
+                    cardNameMap[card_name] = id;
                 });
             }
 
@@ -104,8 +107,11 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
         const card = cards[cardname];
         if (card) return card;
         if (card === null) return;
-        const matched_name = cardNameMap[cardname];
-        if (matched_name) return cards[matched_name];
+
+        if (!isUUID(cardname)) {
+            const matched_name = cardNameMap[cardname];
+            if (matched_name) return cards[matched_name];
+        }
 
         setQueue((queue) => queue.add(cardname));
         setNeedsFetch(true);
@@ -131,12 +137,21 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
         return await promise;
     }
 
+    function preloadCards(cards: string[]) {
+        setQueue((queue) => {
+            cards.forEach((c) => queue.add(c));
+            return queue;
+        });
+        setNeedsFetch(true);
+    }
+
     return (
         <ScrycardsContext.Provider
             value={{
-                cards: cards,
-                requestCard: requestCard,
-                symbols: symbols,
+                cards,
+                requestCard,
+                preloadCards,
+                symbols,
             }}
         >
             {props.children}
