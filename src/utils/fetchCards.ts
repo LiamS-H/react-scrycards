@@ -3,6 +3,7 @@ import type {
     ScryfallCard,
     ScryfallError,
 } from "@scryfall/api-types";
+import { isUUID } from "./isUUID";
 
 export async function fetchCards(
     cards_set: Iterable<string>,
@@ -19,8 +20,14 @@ export async function fetchCards(
         return card_lists.flat();
     }
 
-    const cardQueries: { name: string }[] = [];
+    const cardQueries: ({ name: string } | { id: string })[] = [];
     for (const card_name of cards) {
+        if (isUUID(card_name)) {
+            cardQueries.push({
+                id: card_name,
+            });
+            continue;
+        }
         let formatted_card = card_name;
         if (card_name.includes("//")) {
             formatted_card = card_name.split("//")[0].trim();

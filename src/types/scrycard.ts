@@ -23,7 +23,7 @@ type ScrycardsSymbolTextRenderer = (props: IScrytextProps) => ReactNode;
  * @property {boolean} faceDown - should the card be displayed on its alternate face
  * @property {ScrycardsSymbolTextRenderer} symbol_text_renderer - function to replace symbol names with symbol svgs
  * @property {ReactNode} flipIcon - a ReactNode to be renderred as the flip icon for flippable cards
- * @property {"auto" | string } link - "auto" uses the Scryfall Link automatically
+ * @property {"auto" | string } imageLink - "auto" uses the Scryfall Link automatically
  */
 interface IScrycardOptions {
     size?: ScrycardSizes;
@@ -38,7 +38,7 @@ interface IScrycardOptions {
     faceDown?: boolean;
     symbol_text_renderer?: ScrycardsSymbolTextRenderer;
     flipIcon?: ReactNode;
-    imageLink?: "auto" | string;
+    imageLink?: "auto" | (string & {});
 }
 
 interface IScrycardLayoutCard {
@@ -56,7 +56,7 @@ interface IScrycardLayoutCard {
 
 /**
  * Props for the ScryNameCard component.
- * @property {string} card_name - The name of the card.
+ * @property {string} card_name - The name of the card or the Scryfall UUID
  * @extends IScrycardOptions
  */
 interface IScryNameCardProps
@@ -90,12 +90,10 @@ interface IScrycardProps extends IScrycardOptions {
 /**
  * A map between text representation and image URI
  * @example { "{T}": "https://svgs.scryfall.io/card-symbols/T.svg" }
+ * @type {string} key - text representation of symbol
+ * @type {string} value - svg uri of image
  */
 interface IScrysymbolMap {
-    /**
-     * @type {string} key - text representation of symbol
-     * @type {string} value - svg uri of image
-     */
     [key: string]: string;
 }
 export type {
