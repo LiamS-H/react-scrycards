@@ -1,5 +1,15 @@
 # react-scrycards
 
+## 1.4.0
+
+### Minor Changes
+
+-   1f88824: - changed context to use Scryfall UUIDs under the hood
+    -   added the ability to fetch cards by UUID
+    -   added preloading function to context
+    -   small documentation update to reflect changes
+    -   updated dependencies
+
 ## 1.3.1
 
 ### Patch Changes
