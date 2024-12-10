@@ -1,5 +1,32 @@
 # react-scrycards
 
+## 1.4.0
+
+### Minor Changes
+
+-   1f88824: - changed context to use Scryfall UUIDs under the hood
+    -   added the ability to fetch cards by UUID
+    -   added preloading function to context
+    -   small documentation update to reflect changes
+    -   updated dependencies
+
+## 1.3.1
+
+### Patch Changes
+
+-   2ab7f72: added missing style for tapped card
+
+## 1.3.0
+
+### Minor Changes
+
+-   e2c3ef2: new fields to control Scrycard state
+-   1ca7b5e: move react to peer dependency
+
+### Patch Changes
+
+-   3c5729a: add facedown card images and controlled state
+
 ## 1.2.2
 
 ### Patch Changes
