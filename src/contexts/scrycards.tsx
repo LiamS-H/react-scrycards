@@ -104,6 +104,7 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
     }, []);
 
     async function requestCard(cardname: string) {
+        cardname = cardname.toLowerCase();
         const card = cards[cardname];
         if (card) return card;
         if (card === null) return;
