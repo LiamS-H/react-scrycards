@@ -1,5 +1,11 @@
 # react-scrycards
 
+## 1.4.1
+
+### Patch Changes
+
+-   84c5733: fixed cache issue for multiname cards
+
 ## 1.4.0
 
 ### Minor Changes
