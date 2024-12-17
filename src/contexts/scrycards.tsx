@@ -138,9 +138,15 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
         return await promise;
     }
 
-    function preloadCards(cards: string[]) {
+    function preloadCards(preload_cards: string[]) {
+        const new_cards = new Set<string>();
+        for (const card of preload_cards) {
+            if (cards[card]) continue;
+            if (cardNameMap[card]) continue;
+            new_cards.add(card);
+        }
         setQueue((queue) => {
-            cards.forEach((c) => queue.add(c));
+            new_cards.forEach((c) => queue.add(c));
             return queue;
         });
         setNeedsFetch(true);
