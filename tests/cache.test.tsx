@@ -6,6 +6,7 @@ import {
 } from "../src/contexts/scrycards";
 import ScryNameCard from "../src/components/ScryNameCard";
 import { useEffect, useState } from "react";
+import { deck } from "./deck";
 
 const DelayedScryNameCard = ({
     card_name,
@@ -27,20 +28,17 @@ const DelayedScryNameCard = ({
     return isVisible ? <ScryNameCard card_name={card_name} /> : null;
 };
 
-// const CardCacheTestComponent = ({ cardName }: { cardName: string }) => {
-//     const context = useScrycardsContext();
+const PreloadCard = ({ cards }: { cards: string[] }) => {
+    const { preloadCards } = useScrycardsContext();
+    useEffect(() => {
+        preloadCards(cards);
+    }, []);
+    return null;
+};
 
-//     useEffect(() => {
-//         expect(context.cards);
-//     }, [cardName, context]);
-
-//     return <ScryNameCard card_name={cardName} />;
-// };
-
-describe("ScryCard", () => {
-    // const Card = "Akki Lavarunner // Tok-Tok, Volcano Born";
+describe("ScrycardContext", () => {
     const Card = "Opt";
-    it("caches cards redered at different times", async () => {
+    it("caches cards rendered at different times", async () => {
         const fetchCalls = new Set();
         const originalFetch = global.fetch;
 
@@ -54,6 +52,9 @@ describe("ScryCard", () => {
         const { debug } = render(
             <ScrycardsContextProvider>
                 <DelayedScryNameCard card_name={Card} delay={0} />
+                <DelayedScryNameCard card_name={Card} delay={100} />
+                <DelayedScryNameCard card_name={Card} delay={200} />
+                <DelayedScryNameCard card_name={Card} delay={300} />
                 <DelayedScryNameCard card_name={Card} delay={400} />
                 <DelayedScryNameCard card_name={Card} delay={500} />
             </ScrycardsContextProvider>,
@@ -61,7 +62,7 @@ describe("ScryCard", () => {
         debug();
         await waitFor(
             () => {
-                expect(screen.getAllByAltText(Card)).toHaveLength(3);
+                expect(screen.getAllByAltText(Card)).toHaveLength(6);
             },
             { timeout: 5000 },
         );
@@ -93,6 +94,36 @@ describe("ScryCard", () => {
         await waitFor(
             () => {
                 expect(screen.getAllByAltText(Card)).toHaveLength(4);
+            },
+            { timeout: 5000 },
+        );
+        // 2 not 1 because symbols also use 1 fetch
+        expect(fetchCalls.size).toBe(2);
+
+        global.fetch = originalFetch;
+    });
+    it("caches preloaded cards", async () => {
+        const fetchCalls = new Set();
+        const originalFetch = global.fetch;
+
+        global.fetch = vi.fn(
+            async (input: RequestInfo | URL, init?: RequestInit) => {
+                fetchCalls.add(input.toString());
+                return originalFetch(input, init);
+            },
+        );
+
+        render(
+            <ScrycardsContextProvider>
+                <PreloadCard cards={deck} />
+                <DelayedScryNameCard card_name={deck[0]} delay={100} />
+                <DelayedScryNameCard card_name={deck[78]} delay={100} />
+            </ScrycardsContextProvider>,
+        );
+        await waitFor(
+            () => {
+                expect(screen.getAllByAltText(deck[0])).toHaveLength(1);
+                expect(screen.getAllByAltText(deck[78])).toHaveLength(1);
             },
             { timeout: 5000 },
         );
