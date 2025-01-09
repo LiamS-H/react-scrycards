@@ -4,6 +4,8 @@ import {
     useContext,
     useEffect,
     useState,
+    useCallback,
+    useRef,
 } from "react";
 import { fetchCards } from "../utils/fetchCards";
 import { matchCards } from "../utils/matchCards";
@@ -13,149 +15,204 @@ import type { ScryfallCard } from "@scryfall/api-types";
 import { isUUID } from "../utils/isUUID";
 
 interface IScrycardsContext {
-    cards: { [key: string]: ScryfallCard.Any | null };
     requestCard: (arg0: string) => Promise<ScryfallCard.Any | undefined | null>;
     preloadCards: (arg0: string[]) => void;
     symbols: IScrysymbolMap;
 }
 
+interface PendingRequest {
+    promise: Promise<ScryfallCard.Any | undefined | null>;
+    resolve: (value: ScryfallCard.Any | undefined | null) => void;
+}
+
+interface CardsState {
+    cards: { [key: string]: ScryfallCard.Any | null };
+    cardNameMap: { [key: string]: string };
+}
+
 const ScrycardsContext = createContext<IScrycardsContext | null>(null);
 
+const BATCH_DELAY = 50;
+const MAX_BATCH_SIZE = 75;
+
 function ScrycardsContextProvider(props: { children: ReactNode }) {
-    const [needsFetch, setNeedsFetch] = useState<boolean>(false);
-    const [cards, setCards] = useState<{
-        [key: string]: ScryfallCard.Any | null;
-    }>({});
-    const [cardNameMap, setCardNameMap] = useState<{ [key: string]: string }>(
-        {},
-    );
+    const cardsStateRef = useRef<CardsState>({
+        cards: {},
+        cardNameMap: {},
+    });
+
     const [symbols, setSymbols] = useState<IScrysymbolMap>({});
-    const [queue, setQueue] = useState<Set<string>>(new Set());
-    const [promises, setPromises] = useState<{
-        [key: string]: ((
-            arg0: ScryfallCard.Any | Promise<ScryfallCard.Any> | undefined,
-        ) => void)[];
-    }>({});
+    const symbolsFetching = useRef(false);
 
-    useEffect(() => {
-        if (needsFetch == false) return;
-        if (queue.size == 0) return;
+    const pendingRequestsRef = useRef<Map<string, PendingRequest | null>>(
+        new Map(),
+    );
+    const queueRef = useRef<Set<string>>(new Set());
 
-        async function parseCards() {
-            let fetched_cards = await fetchCards(queue);
-            if (fetched_cards == null) fetched_cards = [];
-            const new_cards: { [key: string]: ScryfallCard.Any } = {};
+    const isProcessingRef = useRef(false);
+    const batchTimeoutRef = useRef<NodeJS.Timeout>();
+
+    const processBatch = useCallback(async () => {
+        if (isProcessingRef.current) {
+            scheduleBatch();
+            return;
+        }
+
+        if (queueRef.current.size === 0) return;
+        isProcessingRef.current = true;
+        const allQueuedItems = Array.from(queueRef.current);
+        const currentBatchItems = allQueuedItems.slice(0, MAX_BATCH_SIZE);
+        const remainingItems = allQueuedItems.slice(MAX_BATCH_SIZE);
+
+        const currentQueue = new Set(currentBatchItems);
+        queueRef.current = new Set(remainingItems);
+
+        try {
+            const fetched_cards = (await fetchCards(currentQueue)) || [];
+
+            isProcessingRef.current = false;
 
             for (const card of fetched_cards) {
                 const id = card.id;
-                new_cards[id] = card;
-                if (queue.has(id)) continue;
-                matchCards(queue, card.name).forEach((card_name) => {
-                    cardNameMap[card_name] = id;
-                });
-            }
+                cardsStateRef.current.cards[id] = card;
 
-            const all_cards = { ...cards, ...new_cards };
-
-            setCards(all_cards);
-
-            setQueue(new Set());
-            setNeedsFetch(false);
-
-            for (const card in promises) {
-                let cached_card = all_cards[card];
-                if (!cached_card) {
-                    cached_card = all_cards[cardNameMap[card.toLowerCase()]];
+                if (!currentQueue.has(id)) {
+                    matchCards(currentQueue, card.name).forEach((card_name) => {
+                        cardsStateRef.current.cardNameMap[card_name] = id;
+                    });
                 }
-                if (!cached_card) {
-                    promises[card].forEach((resolve) => resolve(undefined));
-                    console.error(
-                        `[scrycards] Unable to locate card "${card}"`,
-                    );
-                    all_cards[card] = null;
-                    continue;
+            }
+
+            currentQueue.forEach((cardName) => {
+                const pending = pendingRequestsRef.current.get(cardName);
+                if (!pending) return;
+
+                const resolvedCard =
+                    cardsStateRef.current.cards[cardName] ||
+                    cardsStateRef.current.cards[
+                        cardsStateRef.current.cardNameMap[
+                            cardName.toLowerCase()
+                        ]
+                    ] ||
+                    undefined;
+
+                pending.resolve(resolvedCard);
+                pendingRequestsRef.current.delete(cardName);
+            });
+        } catch (error) {
+            console.error("[scrycards] Error fetching cards:", error);
+            currentQueue.forEach((cardName) => {
+                const pending = pendingRequestsRef.current.get(cardName);
+                if (pending) {
+                    pending.resolve(undefined);
+                    pendingRequestsRef.current.delete(cardName);
                 }
-                promises[card].forEach((resolve) => resolve(cached_card));
+            });
+        } finally {
+            if (queueRef.current.size > 0) {
+                scheduleBatch();
             }
-            setCardNameMap((old) => ({ ...old, ...cardNameMap }));
-            setPromises({});
         }
-
-        parseCards();
-    }, [needsFetch]);
-
-    useEffect(() => {
-        async function parseSymbols() {
-            const fetched_symbols = await fetchSymbols();
-            if (fetched_symbols == null) {
-                console.error(
-                    "[scrycards] something went wrong fetching symbols",
-                );
-                return;
-            }
-            const new_symbols: IScrysymbolMap = {};
-            for (const symbol of fetched_symbols) {
-                if (!symbol.svg_uri) continue;
-                new_symbols[symbol.symbol] = symbol.svg_uri;
-            }
-            setSymbols(new_symbols);
-        }
-        parseSymbols();
     }, []);
 
-    async function requestCard(cardname: string) {
-        cardname = cardname.toLowerCase();
-        const card = cards[cardname];
-        if (card) return card;
-        if (card === null) return;
+    const scheduleBatch = useCallback(() => {
+        batchTimeoutRef.current = setTimeout(() => {
+            processBatch();
+        }, BATCH_DELAY);
+    }, [processBatch]);
 
-        if (!isUUID(cardname)) {
-            const matched_name = cardNameMap[cardname];
-            if (matched_name) return cards[matched_name];
+    const requestCard = useCallback(async (cardName: string) => {
+        cardName = cardName.toLowerCase();
+
+        const cached = cardsStateRef.current.cards[cardName];
+        if (cached !== undefined) return cached;
+
+        if (!isUUID(cardName)) {
+            const matchedId = cardsStateRef.current.cardNameMap[cardName];
+            if (
+                matchedId &&
+                cardsStateRef.current.cards[matchedId] !== undefined
+            ) {
+                return cardsStateRef.current.cards[matchedId];
+            }
         }
 
-        setQueue((queue) => queue.add(cardname));
-        setNeedsFetch(true);
+        const pendingRequest = pendingRequestsRef.current.get(cardName);
+        if (pendingRequest) {
+            return pendingRequest.promise;
+        }
 
+        let resolveRef:
+            | ((value: ScryfallCard.Any | undefined | null) => void)
+            | null = null;
         const promise = new Promise<ScryfallCard.Any | undefined | null>(
             (resolve) => {
-                setPromises((promises) => {
-                    const new_promises = {
-                        ...promises,
-                    };
-                    if (promises[cardname] != undefined) {
-                        new_promises[cardname] = [
-                            ...promises[cardname],
-                            resolve,
-                        ];
-                    } else {
-                        new_promises[cardname] = [resolve];
-                    }
-                    return new_promises;
-                });
+                resolveRef = resolve;
             },
         );
-        return await promise;
-    }
 
-    function preloadCards(preload_cards: string[]) {
-        const new_cards = new Set<string>();
-        for (const card of preload_cards) {
-            if (cards[card]) continue;
-            if (cardNameMap[card]) continue;
-            new_cards.add(card);
-        }
-        setQueue((queue) => {
-            new_cards.forEach((c) => queue.add(c));
-            return queue;
+        if (!resolveRef) throw new Error("Promise resolution not set");
+
+        pendingRequestsRef.current.set(cardName, {
+            promise,
+            resolve: resolveRef,
         });
-        setNeedsFetch(true);
-    }
+
+        if (pendingRequest !== null) {
+            queueRef.current.add(cardName);
+            scheduleBatch();
+        }
+
+        return promise;
+    }, []);
+
+    const preloadCards = useCallback((preloadCards: string[]) => {
+        const newCards = preloadCards.filter((card) => {
+            const lowercaseCard = card.toLowerCase();
+            return (
+                !cardsStateRef.current.cards[lowercaseCard] &&
+                !cardsStateRef.current.cardNameMap[lowercaseCard]
+            );
+        });
+
+        if (newCards.length === 0) return;
+
+        newCards.forEach((card) => {
+            card = card.toLowerCase();
+            queueRef.current.add(card);
+            pendingRequestsRef.current.set(card, null);
+        });
+        scheduleBatch();
+    }, []);
+
+    useEffect(() => {
+        if (symbolsFetching.current) return;
+        symbolsFetching.current = true;
+        fetchSymbols().then((fetched_symbols) => {
+            if (!fetched_symbols) {
+                console.error("[scrycards] Error fetching symbols");
+                return;
+            }
+
+            const newSymbols: IScrysymbolMap = {};
+            for (const symbol of fetched_symbols) {
+                if (symbol.svg_uri) {
+                    newSymbols[symbol.symbol] = symbol.svg_uri;
+                }
+            }
+            setSymbols(newSymbols);
+        });
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            clearTimeout(batchTimeoutRef.current);
+        };
+    }, []);
 
     return (
         <ScrycardsContext.Provider
             value={{
-                cards,
                 requestCard,
                 preloadCards,
                 symbols,
@@ -168,11 +225,11 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
 
 function useScrycardsContext() {
     const context = useContext(ScrycardsContext);
-    if (!context)
+    if (!context) {
         throw Error(
-            "[scrycards] useScrycardsContext() must be calle inside provider",
+            "[scrycards] useScrycardsContext() must be called inside provider",
         );
-
+    }
     return context;
 }
 
