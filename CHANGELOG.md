@@ -1,5 +1,11 @@
 # react-scrycards
 
+## 1.5.1
+
+### Patch Changes
+
+-   021e5cc: fix isFlippable
+
 ## 1.5.0
 
 ### Minor Changes
