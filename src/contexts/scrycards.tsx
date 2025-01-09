@@ -137,7 +137,7 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
             }
         }
 
-        let pendingRequest = pendingRequestsRef.current.get(cardName);
+        const pendingRequest = pendingRequestsRef.current.get(cardName);
         if (pendingRequest) {
             return pendingRequest.promise;
         }
