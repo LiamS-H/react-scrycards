@@ -168,10 +168,11 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
 
     const preloadCards = useCallback((preloadCards: string[]) => {
         const newCards = preloadCards.filter((card) => {
-            const lowercaseCard = card.toLowerCase();
+            card = card.toLowerCase();
             return (
-                !cardsStateRef.current.cards[lowercaseCard] &&
-                !cardsStateRef.current.cardNameMap[lowercaseCard]
+                !cardsStateRef.current.cards[card] &&
+                !cardsStateRef.current.cardNameMap[card] &&
+                !pendingRequestsRef.current.has(card)
             );
         });
 
