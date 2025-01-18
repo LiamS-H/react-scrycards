@@ -15,14 +15,16 @@ import type { ScryfallCard } from "@scryfall/api-types";
 import { isUUID } from "../utils/isUUID";
 
 interface IScrycardsContext {
-    requestCard: (arg0: string) => Promise<ScryfallCard.Any | undefined | null>;
+    requestCard: (
+        arg0: string,
+    ) => Promise<ScryfallCard.Any | undefined> | ScryfallCard.Any | undefined;
     preloadCards: (arg0: string[]) => void;
     symbols: IScrysymbolMap;
 }
 
 interface PendingRequest {
-    promise: Promise<ScryfallCard.Any | undefined | null>;
-    resolve: (value: ScryfallCard.Any | undefined | null) => void;
+    promise: Promise<ScryfallCard.Any | undefined>;
+    resolve: (value: ScryfallCard.Any | undefined) => void;
 }
 
 interface CardsState {
@@ -121,50 +123,59 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
         }, BATCH_DELAY);
     }, [processBatch]);
 
-    const requestCard = useCallback(async (cardName: string) => {
-        cardName = cardName.toLowerCase();
+    const requestCard = useCallback(
+        (
+            cardName: string,
+        ):
+            | Promise<ScryfallCard.Any | undefined>
+            | ScryfallCard.Any
+            | undefined => {
+            cardName = cardName.toLowerCase();
 
-        const cached = cardsStateRef.current.cards[cardName];
-        if (cached !== undefined) return cached;
+            const cached = cardsStateRef.current.cards[cardName];
+            if (cached === null) return undefined;
+            if (cached !== undefined) return cached;
 
-        if (!isUUID(cardName)) {
-            const matchedId = cardsStateRef.current.cardNameMap[cardName];
-            if (
-                matchedId &&
-                cardsStateRef.current.cards[matchedId] !== undefined
-            ) {
-                return cardsStateRef.current.cards[matchedId];
+            if (!isUUID(cardName)) {
+                const matchedId = cardsStateRef.current.cardNameMap[cardName];
+                if (
+                    matchedId &&
+                    cardsStateRef.current.cards[matchedId] !== undefined
+                ) {
+                    return cardsStateRef.current.cards[matchedId] || undefined;
+                }
             }
-        }
 
-        const pendingRequest = pendingRequestsRef.current.get(cardName);
-        if (pendingRequest) {
-            return pendingRequest.promise;
-        }
+            const pendingRequest = pendingRequestsRef.current.get(cardName);
+            if (pendingRequest) {
+                return pendingRequest.promise;
+            }
 
-        let resolveRef:
-            | ((value: ScryfallCard.Any | undefined | null) => void)
-            | null = null;
-        const promise = new Promise<ScryfallCard.Any | undefined | null>(
-            (resolve) => {
-                resolveRef = resolve;
-            },
-        );
+            let resolveRef:
+                | ((value: ScryfallCard.Any | undefined) => void)
+                | null = null;
+            const promise = new Promise<ScryfallCard.Any | undefined>(
+                (resolve) => {
+                    resolveRef = resolve;
+                },
+            );
 
-        if (!resolveRef) throw new Error("Promise resolution not set");
+            if (!resolveRef) throw new Error("Promise resolution not set");
 
-        pendingRequestsRef.current.set(cardName, {
-            promise,
-            resolve: resolveRef,
-        });
+            pendingRequestsRef.current.set(cardName, {
+                promise,
+                resolve: resolveRef,
+            });
 
-        if (pendingRequest !== null) {
-            queueRef.current.add(cardName);
-            scheduleBatch();
-        }
+            if (pendingRequest !== null) {
+                queueRef.current.add(cardName);
+                scheduleBatch();
+            }
 
-        return promise;
-    }, []);
+            return promise;
+        },
+        [],
+    );
 
     const preloadCards = useCallback((preloadCards: string[]) => {
         const newCards = preloadCards.filter((card) => {
