@@ -1,5 +1,11 @@
 # react-scrycards
 
+## 1.5.2
+
+### Patch Changes
+
+-   f443597: optimized useScrycard to return card on first render not second to prevent flickering
+
 ## 1.5.1
 
 ### Patch Changes
