@@ -1,5 +1,38 @@
 # react-scrycards
 
+## 1.6.0
+
+### Minor Changes
+
+-   dd6cf72: fix useScrycard refreshing
+
+## 1.5.2
+
+### Patch Changes
+
+-   f443597: optimized useScrycard to return card on first render not second to prevent flickering
+
+## 1.5.1
+
+### Patch Changes
+
+-   021e5cc: fix isFlippable
+
+## 1.5.0
+
+### Minor Changes
+
+-   b4f18a3: cache is now ref based to solve race conditions
+    cache now batches and spaces out requests to comply with API restrictions
+    cache now supports mass preloading
+    add tests for race conditions and mass preloading
+
+## 1.4.1
+
+### Patch Changes
+
+-   84c5733: fixed cache issue for multiname cards
+
 ## 1.4.0
 
 ### Minor Changes
