@@ -39,12 +39,12 @@ const PreloadCard = ({ cards }: { cards: string[] }) => {
 describe("ScrycardContext", () => {
     const Card = "Opt";
     it("caches cards rendered at different times", async () => {
-        const fetchCalls = new Set();
+        const fetchCalls: string[] = [];
         const originalFetch = global.fetch;
 
         global.fetch = vi.fn(
             async (input: RequestInfo | URL, init?: RequestInit) => {
-                fetchCalls.add(input.toString());
+                fetchCalls.push(input.toString());
                 return originalFetch(input, init);
             },
         );
@@ -68,17 +68,17 @@ describe("ScrycardContext", () => {
         );
 
         // 2 not 1 because symbols also use 1 fetch
-        expect(fetchCalls.size).toBe(2);
+        expect(fetchCalls.length).toBe(2);
 
         global.fetch = originalFetch;
     });
     it("caches cards rendered at the same time", async () => {
-        const fetchCalls = new Set();
+        const fetchCalls: string[] = [];
         const originalFetch = global.fetch;
 
         global.fetch = vi.fn(
             async (input: RequestInfo | URL, init?: RequestInit) => {
-                fetchCalls.add(input.toString());
+                fetchCalls.push(input.toString());
                 return originalFetch(input, init);
             },
         );
@@ -98,17 +98,17 @@ describe("ScrycardContext", () => {
             { timeout: 5000 },
         );
         // 2 not 1 because symbols also use 1 fetch
-        expect(fetchCalls.size).toBe(2);
+        expect(fetchCalls.length).toBe(2);
 
         global.fetch = originalFetch;
     });
     it("caches preloaded cards", async () => {
-        const fetchCalls = new Set();
+        const fetchCalls: string[] = [];
         const originalFetch = global.fetch;
 
         global.fetch = vi.fn(
             async (input: RequestInfo | URL, init?: RequestInit) => {
-                fetchCalls.add(input.toString());
+                fetchCalls.push(input.toString());
                 return originalFetch(input, init);
             },
         );
@@ -127,8 +127,40 @@ describe("ScrycardContext", () => {
             },
             { timeout: 5000 },
         );
+        // 3 not 2 because symbols also use 1 fetch
+        expect(fetchCalls.length).toBe(3);
+
+        global.fetch = originalFetch;
+    });
+    it("caches invalid cards properly", async () => {
+        const Card = "asldkfjads";
+        const fetchCalls: string[] = [];
+        const originalFetch = global.fetch;
+
+        global.fetch = vi.fn(
+            async (input: RequestInfo | URL, init?: RequestInit) => {
+                fetchCalls.push(input.toString());
+                return originalFetch(input, init);
+            },
+        );
+
+        const { debug } = render(
+            <ScrycardsContextProvider>
+                <PreloadCard cards={[Card]} />
+                <DelayedScryNameCard card_name={Card} delay={100} />
+                <DelayedScryNameCard card_name={Card} delay={1000} />
+            </ScrycardsContextProvider>,
+        );
+        debug();
+        await waitFor(
+            () => {
+                expect(screen.getAllByText("⚠")).toHaveLength(2);
+            },
+            { timeout: 5000 },
+        );
+
         // 2 not 1 because symbols also use 1 fetch
-        expect(fetchCalls.size).toBe(2);
+        expect(fetchCalls.length).toBe(2);
 
         global.fetch = originalFetch;
     });
