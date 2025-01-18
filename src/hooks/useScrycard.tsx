@@ -1,17 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useScrycardsContext } from "../contexts/scrycards";
 import type { ScryfallCard } from "@scryfall/api-types";
 
-function useScrycard(cardname: string) {
+function useScrycard(cardName: string) {
     const { requestCard } = useScrycardsContext();
     const [card, setCard] = useState<ScryfallCard.Any | null | undefined>(null);
-    async function getCard() {
-        const card = await requestCard(cardname);
-        setCard(card);
+
+    if (card === null) {
+        const request = requestCard(cardName);
+        if (request instanceof Promise) {
+            request.then((c) => setCard(c));
+        } else {
+            setCard(request);
+            return request;
+        }
     }
-    useEffect(() => {
-        getCard();
-    }, [cardname]);
     return card;
 }
 
