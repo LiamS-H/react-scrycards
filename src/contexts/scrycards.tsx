@@ -98,6 +98,10 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
                     ] ||
                     undefined;
 
+                if (resolvedCard === undefined) {
+                    cardsStateRef.current.cards[cardName] = null;
+                }
+
                 pending.resolve(resolvedCard);
                 pendingRequestsRef.current.delete(cardName);
             });
@@ -118,8 +122,10 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
     }, []);
 
     const scheduleBatch = useCallback(() => {
+        if (batchTimeoutRef.current !== undefined) return;
         batchTimeoutRef.current = setTimeout(() => {
             processBatch();
+            batchTimeoutRef.current = undefined;
         }, BATCH_DELAY);
     }, [processBatch]);
 
@@ -198,7 +204,10 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
     }, []);
 
     useEffect(() => {
-        if (symbolsFetching.current) return;
+        if (symbolsFetching.current)
+            return () => {
+                clearTimeout(batchTimeoutRef.current);
+            };
         symbolsFetching.current = true;
         fetchSymbols().then((fetched_symbols) => {
             if (!fetched_symbols) {
@@ -214,12 +223,6 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
             }
             setSymbols(newSymbols);
         });
-    }, []);
-
-    useEffect(() => {
-        return () => {
-            clearTimeout(batchTimeoutRef.current);
-        };
     }, []);
 
     return (
