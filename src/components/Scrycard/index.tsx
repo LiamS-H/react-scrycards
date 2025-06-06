@@ -91,6 +91,9 @@ export default function Scrycard(props: IScrycardProps) {
                 ? props.card?.scryfall_uri
                 : props.imageLink,
     } as IScrycardOptions;
-    const card = compFromCard(options, props.card);
-    return <CardWrapper {...options}>{card}</CardWrapper>;
+    return (
+        <CardWrapper {...options}>
+            {compFromCard(options, props.card)}
+        </CardWrapper>
+    );
 }
