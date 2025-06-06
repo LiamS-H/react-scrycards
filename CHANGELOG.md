@@ -1,5 +1,16 @@
 # react-scrycards
 
+## 1.5.0
+
+### Minor Changes
+
+-   6f2c890: move ci to bun
+-   a3e311f: react19 + lazy symbols + style consolidation
+
+### Patch Changes
+
+-   5c3484c: add bun
+
 ## 1.6.0
 
 ### Minor Changes
