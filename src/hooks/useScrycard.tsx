@@ -14,16 +14,6 @@ function useScrycard(cardName: string) {
         }
     }, [cardName]);
 
-    if (card === null) {
-        const request = requestCard(cardName);
-        if (request instanceof Promise) {
-            request.then((c) => setCard(c));
-        } else {
-            setCard(request);
-            return request;
-        }
-    }
-
     return card;
 }
 

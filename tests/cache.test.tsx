@@ -67,8 +67,7 @@ describe("ScrycardContext", () => {
             { timeout: 5000 },
         );
 
-        // 2 not 1 because symbols also use 1 fetch
-        expect(fetchCalls.length).toBe(2);
+        expect(fetchCalls.length).toBe(1);
 
         global.fetch = originalFetch;
     });
@@ -97,8 +96,7 @@ describe("ScrycardContext", () => {
             },
             { timeout: 5000 },
         );
-        // 2 not 1 because symbols also use 1 fetch
-        expect(fetchCalls.length).toBe(2);
+        expect(fetchCalls.length).toBe(1);
 
         global.fetch = originalFetch;
     });
@@ -127,8 +125,7 @@ describe("ScrycardContext", () => {
             },
             { timeout: 5000 },
         );
-        // 3 not 2 because symbols also use 1 fetch
-        expect(fetchCalls.length).toBe(3);
+        expect(fetchCalls.length).toBe(2);
 
         global.fetch = originalFetch;
     });
@@ -159,8 +156,7 @@ describe("ScrycardContext", () => {
             { timeout: 5000 },
         );
 
-        // 2 not 1 because symbols also use 1 fetch
-        expect(fetchCalls.length).toBe(2);
+        expect(fetchCalls.length).toBe(1);
 
         global.fetch = originalFetch;
     });

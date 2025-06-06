@@ -3,7 +3,6 @@ import {
     createContext,
     useContext,
     useEffect,
-    useState,
     useCallback,
     useRef,
 } from "react";
@@ -19,7 +18,7 @@ interface IScrycardsContext {
         arg0: string,
     ) => Promise<ScryfallCard.Any | undefined> | ScryfallCard.Any | undefined;
     preloadCards: (arg0: string[]) => void;
-    symbols: IScrysymbolMap;
+    getSymbols: () => Promise<IScrysymbolMap> | IScrysymbolMap;
 }
 
 interface PendingRequest {
@@ -43,8 +42,9 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
         cardNameMap: {},
     });
 
-    const [symbols, setSymbols] = useState<IScrysymbolMap>({});
-    const symbolsFetching = useRef(false);
+    const symbols = useRef<IScrysymbolMap | Promise<IScrysymbolMap> | null>(
+        null,
+    );
 
     const pendingRequestsRef = useRef<Map<string, PendingRequest | null>>(
         new Map(),
@@ -203,16 +203,15 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
         scheduleBatch();
     }, []);
 
-    useEffect(() => {
-        if (symbolsFetching.current)
-            return () => {
-                clearTimeout(batchTimeoutRef.current);
-            };
-        symbolsFetching.current = true;
-        fetchSymbols().then((fetched_symbols) => {
+    const getSymbols = useCallback(() => {
+        if (symbols.current) {
+            return symbols.current;
+        }
+        async function fetch() {
+            const fetched_symbols = await fetchSymbols();
             if (!fetched_symbols) {
                 console.error("[scrycards] Error fetching symbols");
-                return;
+                return {};
             }
 
             const newSymbols: IScrysymbolMap = {};
@@ -221,8 +220,12 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
                     newSymbols[symbol.symbol] = symbol.svg_uri;
                 }
             }
-            setSymbols(newSymbols);
-        });
+            symbols.current = newSymbols;
+            return newSymbols;
+        }
+        const result = fetch();
+        symbols.current = result;
+        return result;
     }, []);
 
     return (
@@ -230,7 +233,7 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
             value={{
                 requestCard,
                 preloadCards,
-                symbols,
+                getSymbols,
             }}
         >
             {props.children}
