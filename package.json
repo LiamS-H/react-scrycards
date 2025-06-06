@@ -18,7 +18,8 @@
         "release": "npm run build && npm publish"
     },
     "dependencies": {
-        "@scryfall/api-types": "^1.0.0-alpha.4"
+        "@scryfall/api-types": "^1.0.0-alpha.4",
+        "@types/react": "^19.1.6"
     },
     "peerDependencies": {
         "typescript": "^5.8.3",

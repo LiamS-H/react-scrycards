@@ -51,7 +51,7 @@ function ScrycardsContextProvider(props: { children: ReactNode }) {
     const queueRef = useRef<Set<string>>(new Set());
 
     const isProcessingRef = useRef(false);
-    const batchTimeoutRef = useRef<NodeJS.Timeout>();
+    const batchTimeoutRef = useRef<NodeJS.Timeout>(undefined);
 
     const processBatch = useCallback(async () => {
         if (isProcessingRef.current) {
