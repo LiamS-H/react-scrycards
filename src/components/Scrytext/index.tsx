@@ -1,38 +1,59 @@
 import React from "react";
 import type { IScrytextPrimitiveProps } from "../../types/scrycard";
 
-function Italify(input: string): React.ReactNode[] {
-    const chunks = input.split(/(\(.*?\))/);
-    return chunks.map((chunk) => {
-        if (chunk[0] === "(") return <i key={chunk}>{chunk}</i>;
-        return chunk;
+function processTextToElements(
+    text: string,
+    symbols: Record<string, string>,
+): React.ReactNode[] {
+    const parenthesesChunks = text.split(/(\(.*?\))/);
+    const elements: React.ReactNode[] = [];
+
+    parenthesesChunks.forEach((chunk, chunkIndex) => {
+        if (!chunk) return;
+
+        if (chunk.startsWith("(")) {
+            const symbolElements = processSymbolsInText(
+                chunk,
+                symbols,
+                `i-${chunkIndex}`,
+            );
+            elements.push(<i key={`i-${chunkIndex}`}>{symbolElements}</i>);
+        } else {
+            const symbolElements = processSymbolsInText(
+                chunk,
+                symbols,
+                `text-${chunkIndex}`,
+            );
+            elements.push(...symbolElements);
+        }
     });
+
+    return elements;
 }
 
-export default function Scrytext(props: IScrytextPrimitiveProps) {
-    if (!props.children) return null;
-    if (!props.symbols) return <span {...props}>{props.children}</span>;
-
-    if (props.children.length === 0) {
-        return <span {...props}>{props.children}</span>;
-    }
-
+function processSymbolsInText(
+    text: string,
+    symbols: Record<string, string>,
+    keyPrefix: string,
+): React.ReactNode[] {
     const regex = /\{([^}]+)\}/g;
     let match;
     let lastIndex = 0;
     const elements: React.ReactNode[] = [];
 
-    while ((match = regex.exec(props.children)) !== null) {
-        elements.push(
-            ...Italify(props.children.slice(lastIndex, match.index).trim()),
-        );
+    while ((match = regex.exec(text)) !== null) {
+        if (match.index > lastIndex) {
+            const textChunk = text.slice(lastIndex, match.index);
+            if (textChunk) elements.push(textChunk);
+        }
 
         const symbolName = "{" + match[1].toUpperCase() + "}";
-        const symbol = props.symbols[symbolName];
+        const symbol = symbols[symbolName];
+
         if (symbol) {
             elements.push(
                 <img
-                    key={`${symbolName} ${match.index}`}
+                    key={`${keyPrefix}-${match.index}`}
                     src={symbol}
                     alt={symbolName}
                     style={{
@@ -45,10 +66,30 @@ export default function Scrytext(props: IScrytextPrimitiveProps) {
         } else {
             elements.push(match[0]);
         }
+
         lastIndex = regex.lastIndex;
     }
 
-    elements.push(...Italify(props.children.slice(lastIndex).trim()));
+    if (lastIndex < text.length) {
+        const remainingText = text.slice(lastIndex);
+        if (remainingText) elements.push(remainingText);
+    }
 
-    return <span {...props}>{elements}</span>;
+    return elements;
+}
+
+export default function Scrytext({
+    symbols,
+    children,
+    ...span_props
+}: IScrytextPrimitiveProps) {
+    if (!children) return null;
+    if (!symbols) return <span {...span_props}>{children}</span>;
+    if (children.length === 0) {
+        return <span {...span_props}>{children}</span>;
+    }
+
+    const elements = processTextToElements(children, symbols);
+
+    return <span {...span_props}>{elements}</span>;
 }
