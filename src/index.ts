@@ -1,4 +1,5 @@
 export { useScrycard } from "./hooks/useScrycard";
+export { useSymbols } from "./hooks/useSymbols";
 export { default as Scrycard } from "./components/Scrycard";
 export { default as Scryhover } from "./components/Scryhover";
 export { default as ScryNameCard } from "./components/ScryNameCard";
