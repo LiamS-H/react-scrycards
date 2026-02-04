@@ -14,7 +14,7 @@ export default function SplitCard(props: ISplitCardProps) {
     function flip() {
         setFlipped((flipped) => !flipped);
     }
-    const side = props.flipped || flipped ? 1 : 0;
+    const side = props.flipped ?? flipped ? 1 : 0;
 
     const face = props.card.card_faces[side];
 
