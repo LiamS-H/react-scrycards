@@ -1,5 +1,12 @@
 # react-scrycards
 
+## 1.7.1
+
+### Patch Changes
+
+-   3bd840e: fix flipped state not overwritten when flipped prop changes from true to false.
+-   49c13c0: fixed issue with symbols inside intalics in scrytext
+
 ## 1.5.0
 
 ### Minor Changes
