@@ -27,7 +27,6 @@ jobs:
               with:
                   node-version: "24"
                   registry-url: "https://registry.npmjs.org"
-            - run: npm --version
 
             - run: bun install --frozen-lockfile
             - name: Create Release Pull Request or Publish
