@@ -27,12 +27,15 @@ jobs:
               with:
                   node-version: "20"
                   registry-url: "https://registry.npmjs.org"
+            - run: npm --version
 
             - run: bun install --frozen-lockfile
             - name: Create Release Pull Request or Publish
               id: changesets
-              uses: changesets/action@v1
+              uses: changesets/action@v1.6.0
               with:
                   publish: bun run release
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_TOKEN: ""
+                  NODE_AUTH_TOKEN: ""
