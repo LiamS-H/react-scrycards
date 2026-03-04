@@ -1,5 +1,11 @@
 # react-scrycards
 
+## 1.8.0
+
+### Minor Changes
+
+-   a8ad3c5: add support for null and undefined values in useScrycard
+
 ## 1.7.1
 
 ### Patch Changes
